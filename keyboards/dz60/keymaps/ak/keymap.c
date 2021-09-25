@@ -694,7 +694,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% mod:os
-      (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______,  _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
+      (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______, _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
        WIN,              _______, C(_G),   CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
        _______,          CUT,     TERM,    COPY,    SPTLT,   FILENAME,         HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILENAME,XCDCLIP,          _______,
        _______, _______, G(_A),   _______, _______, FILEDIR, _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
