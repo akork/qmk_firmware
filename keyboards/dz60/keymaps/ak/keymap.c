@@ -679,7 +679,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* left_shift,grave_accent_and_tilde,z,x,c,     v,       b,                n,       m,       comma,   period,  slash,   right_shift,,     , */
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
-      LAYOUT_all //%% plain:en
+      LAYOUT_all //%% plain:en 
       (_ESC,             _ESC,    _ESC,    S(_MIN), NEXT,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
        STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE,    _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
        OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
@@ -696,7 +696,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       LAYOUT_all //%% mod:os
       (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______, _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
        WIN,              _______, C(_G),   CUT,     SPTLT1,    _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
-       _______,          CUT,     TERM,    COPY,    SPTLT,   FILE,             HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILE,    XCDCLIP,          _______,
+       _______,          CUT,     TERM,    COPY,    SPTLT,   FILENAME,         HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILENAME,XCDCLIP,          _______,
        _______, _______, G(_A),   _______, _______, FILEDIR, _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
        _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 

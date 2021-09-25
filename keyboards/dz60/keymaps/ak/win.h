@@ -30,7 +30,7 @@
 #define RTAB C(_TAB)
 #define PTAB C(_Q)
 #define KILLTAB C(_W)
-#define FILE A(S(_C))
+#define FILENAME A(S(_C))
 #define FILEDIR C(A(S(_C)))
 
 #define CUT S(KC_DELETE)
