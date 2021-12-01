@@ -604,13 +604,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
          send_string(SS_LCTRL(SS_TAP(X_ENTER)) SS_TAP(X_ENTER));
          return 0;
       case SQUO:
-         send_string(SS_LGUI("x") "''" SS_TAP(X_LEFT) SS_LGUI("v"));
+         send_string(SS_LCTRL("x") "''" SS_TAP(X_LEFT) SS_LCTRL("v"));
          return 0;
       case SPARENS:
-         send_string(SS_LGUI("x") "()" SS_TAP(X_LEFT) SS_LGUI("v"));
+         send_string(SS_LCTRL("x") "()" SS_TAP(X_LEFT) SS_LCTRL("v"));
          return 0;
       case SBRACKS:
-         send_string(SS_LGUI("x") "[]" SS_TAP(X_LEFT) SS_LGUI("v"));
+         send_string(SS_LCTRL("x") "[]" SS_TAP(X_LEFT) SS_LCTRL("v"));
          return 0;
       case MOD_SWITCH:
          mod ^= 1;
@@ -680,16 +680,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
       LAYOUT_all //%% plain:en 
-      (_ESC,             _ESC,    _ESC,    S(_MIN), NEXT,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
-       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE,    _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
+      (_ESC,             NEXT,    NEXT,    S(_MIN), _TAB,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
+       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE, _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
        OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
-       _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _TAB,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
+       _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
        _LCTL,                     _LGUI,   RALT,             _SPC,   OSL_EDI,  MACMETA, RCMD,             _VDN,             _VUP,    MACMETA, _F20),
 
       LAYOUT_all //%% plain:ru
-      (_______,          _______, _SCL,    _______, _M,      _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
+      (_______,          _______, _SCL,    _______, _______,      _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
        _______,          _______, _______, _J,      _______, _______,          _Q,      _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
-       _______,          _SLS,    _F,      _T,      _B,      _E,               _K,      _R,      _N,      _Y,      _C,      _W,               _______,
+       _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _W,               _______,
        _DOT, _______,    _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
@@ -710,9 +710,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:edi
       (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR), C(G(_DN)),SWAPDN,SWAPUP,  C(G(_UP)),_ESC,   _______,  RESET,
-       _______,          _______, UNDO,    CUT,     _______,  G(_O),            C(A(G(_5))),_PGDN, BBOW,   FEOW,    _PGUP,   C(_K),   _______, _______,
-       G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,          _LT,     _DN,     _UP,     _RT,     EOL,      _DEL,               _______,
-       G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,          BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN),_______, _______, _______,
+       _______,          _______, UNDO,    CUT,     _______,  G(_O),            C(A(G(_5))),_PGDN, BBOW,   FEOW,    _PGUP,  C(_K),   _______, _______,
+       G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,          _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
+       G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,          BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
@@ -723,9 +723,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel2
-      (_______,          _______, _______, _______, SPARENS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          _______, PHONY,   CUT,     PHONY,   SQUO,             _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          DUPL,    PASTE,   COPY,    COMMENT, _BSP,             _______, _______, _______, _______, _______, _______,          _______,
+      (_______,          _______, _______, SBRACKS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, PHONY,   CUT,     _BSP,    SQUO,             _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          DUPL,    PASTE,   COPY,    SPARENS, _BSP,             _______, _______, _______, _______, _______, _______,          _______,
        _______, _______, _______, _______, CUT,     DUPL,    _______,          _______, _______, _______, _______, _______, _______, _______, _______,
        _______,                   _______, _______,          _DEL,    OSL_EDI, _______,          _______, _______,          _______, _______, _______),
 
