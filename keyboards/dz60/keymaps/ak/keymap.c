@@ -5,7 +5,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "win.h"
+#include "mac.h"
 
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
 
@@ -680,10 +680,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
       LAYOUT_all //%% plain:en 
-      (_ESC,             _ESC,    _ESC,    S(_MIN), NEXT,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
+      (_ESC,            _SCL,     NEXT,    S(_MIN),  _TAB,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
        STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE,    _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
        OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
-       _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _TAB,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
+       _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
        _LCTL,                     _LGUI,   RALT,             _SPC,   OSL_EDI,  MACMETA, RCMD,             _VDN,             _VUP,    MACMETA, _F20),
 
       LAYOUT_all //%% plain:ru

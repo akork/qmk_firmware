@@ -9,6 +9,10 @@
 #define LSCR _F17
 #define RSCR _F18
 
+#define SPLITRT C(A(S(_F20)))
+#define OTHER C(A(S(_F21)))
+#define DELOTHER C(A(S(_F22)))
+
 #define FSEARCH G(_F)
 #define BSEARCH G(S(_F))
 #define FINDNXT _F3
@@ -26,6 +30,8 @@
 #define RTAB C(_TAB)
 #define PTAB C(_Q)
 #define KILLTAB C(_W)
+#define FILENAME A(S(_C))
+#define FILEDIR C(A(S(_C)))
 #define FILE A(S(_C))
 #define FILEDIR C(A(S(_C)))
 
