@@ -118,6 +118,7 @@ enum custom_keycodes {
    H_B,
    H_C,
    H_D,
+   HOLD,
 
 };
 
@@ -493,14 +494,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LGUI);
             unregister_code(KC_LALT);
             if (meta_up_signal) {
-               register_code(KC_LCTRL);
-               register_code(KC_LALT);
-               register_code(KC_LSHIFT);
-               register_code(_F24);
-               unregister_code(_F24);
-               unregister_code(KC_LCTRL);
-               unregister_code(KC_LALT);
-               unregister_code(KC_LSHIFT);
+               /* register_code(KC_LCTRL); */
+               /* register_code(KC_LALT); */
+               /* register_code(KC_LSHIFT); */
+               register_code(MAGIC);
+               unregister_code(MAGIC);
+               /* unregister_code(KC_LCTRL); */
+               /* unregister_code(KC_LALT); */
+               /* unregister_code(KC_LSHIFT); */
             }
 
          }
@@ -702,7 +703,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% mod:os
       (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______,   _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
-       WIN,              _______, C(_G),   CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
+       WIN,              _______, HOLD,    CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
        _______,          CUT,     TERM,    COPY,    SPTLT,   FILENAME,         HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILENAME,XCDCLIP,          _______,
        _______, _______, G(_A),   _______, _______, FILEDIR, _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
        _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),

@@ -5,6 +5,9 @@
 #define CANCEL _ESC
 #define CANCEL2 C(_RBR)
 // #define FSCR G(_UP)
+
+#define MAGIC _F19
+
 #define FSCR C(_F18)
 #define LSCR C(A(_F18))
 #define RSCR C(A(S(_F18)))
