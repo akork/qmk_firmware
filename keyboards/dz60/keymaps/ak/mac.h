@@ -5,13 +5,13 @@
 #define CANCEL _ESC
 #define CANCEL2 C(_RBR)
 // #define FSCR G(_UP)
-#define FSCR _F15
-#define LSCR _F17
-#define RSCR _F18
+#define FSCR C(_F18)
+#define LSCR C(A(_F18))
+#define RSCR C(A(S(_F18)))
 
-#define SPLITRT _F14
-#define OTHER _F15
-#define DELOTHER C(A(S(_F16)))
+#define SPLITRT C(_F19)
+#define OTHER C(A(_F19))
+#define DELOTHER C(A(S(_F19)))
 
 #define FSEARCH G(_F)
 #define BSEARCH G(S(_F))
