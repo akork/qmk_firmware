@@ -774,7 +774,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:ide
       (_______,          _______, _______, G(_B),   _SCL,    _______, _______, _______, KILLTAB, KILLAPP, G(S(_E)),CX_3,    HYPR(_LBR),_______,HYPR(_RBR),
-       _______,          _______, _______, _______, _______, S(_F6),           _SCL, G(C(S(_J))),OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
+       _______,          _______, _______, _______, _______, S(_F6),           _SCL,    SPLITRT, OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
        _______,          _______, _______, _______, DEBUG,   A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
        _______, _______, _______, _______, _______, _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
        _______,                   _______, _______,          SCLSPC,  SCLSPC,  CCS,              _______, _______,          _______, RGB_HUI, RGB_HUD),

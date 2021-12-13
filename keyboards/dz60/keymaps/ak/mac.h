@@ -9,9 +9,9 @@
 #define LSCR _F17
 #define RSCR _F18
 
-#define SPLITRT C(A(S(_F20)))
-#define OTHER C(A(S(_F21)))
-#define DELOTHER C(A(S(_F22)))
+#define SPLITRT _F14
+#define OTHER _F15
+#define DELOTHER C(A(S(_F16)))
 
 #define FSEARCH G(_F)
 #define BSEARCH G(S(_F))
