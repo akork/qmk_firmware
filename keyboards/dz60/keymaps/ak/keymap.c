@@ -109,6 +109,7 @@ enum custom_keycodes {
    ABRACKS,
    QUOTES,
    CCS, // complete current statement
+   BEGS,
    CCSNL,
    SCLSPC,  // semicolon space
    ENDSPC,
@@ -596,7 +597,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       switch(keycode) {
       case CCS:
 	send_string(SS_TAP(X_END) ";");
-	return 0;  
+	return 0;
+      case BEGS:
+	send_string(SS_TAP(X_END) " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
+	return 0;
       case NCOMMA:
          send_string(", ");
          return 0;
@@ -755,8 +759,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% oneshot:bra
-      (_______,          _______,PARENS_ENDL,S(_LBR),BRACES, S(_RBR), _______, OPEN1,   BSEARCH, FSEARCH, _COM,    PYBLOCK, _______, _______, _______,
-       _______,          S(_0),   S(_9),   ABRACKS, S(_COM), S(_DOT),          OPEN1,   OPEN,    OPEN1,   RECENTF, PYBLOCK, PYBLOCK, _______, _______,
+      (_______,          _______, CCS,     S(_LBR), BRACES,  S(_RBR), _______, OPEN1,   BSEARCH, FSEARCH, _COM,    PYBLOCK, _______, _______, _______,
+       _______,          S(_0),   S(_9),   BEGS,    S(_COM), S(_DOT),          OPEN1,   OPEN,    OPEN1,   RECENTF, PYBLOCK, PYBLOCK, _______, _______,
        C_ENT,            _RBR,    _LBR,    C(_ENT), CCS,     S(_ENT),          MCOLON,  MX,      _______, S(_EQL), S(_4),   S(_3),           _______,
        _______, _______, _______, _______, _______, C(_ENT), _______,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
        _______,                   _______, _______,          COM_SPC, C(_ENT), G(_ENT),          _______, _______,          _______, _______, _______),
@@ -770,7 +774,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:ide
       (_______,          _______, _______, G(_B),   _SCL,    _______, _______, _______, KILLTAB, KILLAPP, G(S(_E)),CX_3,    HYPR(_LBR),_______,HYPR(_RBR),
-       _______,          _______, _______, _______, _______, S(_F6),           CX_G, G(C(S(_J))),OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
+       _______,          _______, _______, _______, _______, S(_F6),           _SCL, G(C(S(_J))),OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
        _______,          _______, _______, _______, DEBUG,   A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
        _______, _______, _______, _______, _______, _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
        _______,                   _______, _______,          SCLSPC,  SCLSPC,  CCS,              _______, _______,          _______, RGB_HUI, RGB_HUD),
