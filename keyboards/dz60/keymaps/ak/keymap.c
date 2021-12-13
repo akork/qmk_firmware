@@ -599,7 +599,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	send_string(SS_TAP(X_END) ";");
 	return 0;
       case BEGS:
-	send_string(SS_TAP(X_END) "{}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
+	send_string(SS_TAP(X_END) " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
 	return 0;
       case NCOMMA:
          send_string(", ");
