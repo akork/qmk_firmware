@@ -594,6 +594,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       clear_weak_mods();
       send_keyboard_report();
       switch(keycode) {
+      case CCS:
+	send_string(SS_TAP(X_END) ";");
+	return 0;  
       case NCOMMA:
          send_string(", ");
          return 0;
@@ -754,7 +757,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       LAYOUT_all //%% oneshot:bra
       (_______,          _______,PARENS_ENDL,S(_LBR),BRACES, S(_RBR), _______, OPEN1,   BSEARCH, FSEARCH, _COM,    PYBLOCK, _______, _______, _______,
        _______,          S(_0),   S(_9),   ABRACKS, S(_COM), S(_DOT),          OPEN1,   OPEN,    OPEN1,   RECENTF, PYBLOCK, PYBLOCK, _______, _______,
-       C_ENT,            _RBR,    _LBR,    C(_ENT), C_ENT,   S(_ENT),          MCOLON,  MX,      _______, S(_EQL), S(_4),   S(_3),           _______,
+       C_ENT,            _RBR,    _LBR,    C(_ENT), CCS,     S(_ENT),          MCOLON,  MX,      _______, S(_EQL), S(_4),   S(_3),           _______,
        _______, _______, _______, _______, _______, C(_ENT), _______,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
        _______,                   _______, _______,          COM_SPC, C(_ENT), G(_ENT),          _______, _______,          _______, _______, _______),
 
