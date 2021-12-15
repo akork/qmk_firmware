@@ -5,7 +5,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "win.h"
+#include "mac.h"
 
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
 
@@ -118,6 +118,7 @@ enum custom_keycodes {
    H_B,
    H_C,
    H_D,
+   HOLD,
 
 };
 
@@ -493,14 +494,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LGUI);
             unregister_code(KC_LALT);
             if (meta_up_signal) {
-               register_code(KC_LCTRL);
-               register_code(KC_LALT);
-               register_code(KC_LSHIFT);
-               register_code(_F24);
-               unregister_code(_F24);
-               unregister_code(KC_LCTRL);
-               unregister_code(KC_LALT);
-               unregister_code(KC_LSHIFT);
+               /* register_code(KC_LCTRL); */
+               /* register_code(KC_LALT); */
+               /* register_code(KC_LSHIFT); */
+               register_code(MAGIC);
+               unregister_code(MAGIC);
+               /* unregister_code(KC_LCTRL); */
+               /* unregister_code(KC_LALT); */
+               /* unregister_code(KC_LSHIFT); */
             }
 
          }
@@ -687,8 +688,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
       LAYOUT_all //%% plain:en 
-      (_ESC,             NEXT,    NEXT,    S(_MIN), _TAB,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
-       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE, _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
+      (_ESC,            _SCL,     NEXT,    S(_MIN),  _TAB,    S(_5),   _______, S(_EQL), _B,      _Y,    OSL_BRA,   FINDNXT, FINDPRV,_NO,      KC_END,
+       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE,    _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
        OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
        _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
        _LCTL,                     _LGUI,   RALT,             _SPC,   OSL_EDI,  MACMETA, RCMD,             _VDN,             _VUP,    MACMETA, _F20),
@@ -702,7 +703,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% mod:os
       (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______,   _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
-       WIN,              _______, C(_G),   CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
+       WIN,              _______, HOLD,    CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
        _______,          CUT,     TERM,    COPY,    SPTLT,   FILENAME,         HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILENAME,XCDCLIP,          _______,
        _______, _______, G(_A),   _______, _______, FILEDIR, _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
        _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
@@ -774,7 +775,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:ide
       (_______,          _______, _______, G(_B),   _SCL,    _______, _______, _______, KILLTAB, KILLAPP, G(S(_E)),CX_3,    HYPR(_LBR),_______,HYPR(_RBR),
-       _______,          _______, _______, _______, _______, S(_F6),           _SCL, G(C(S(_J))),OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
+       _______,          _______, _______, _______, _______, S(_F6),           _SCL,    SPLITRT, OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
        _______,          _______, _______, _______, DEBUG,   A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
        _______, _______, _______, _______, _______, _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
        _______,                   _______, _______,          SCLSPC,  SCLSPC,  CCS,              _______, _______,          _______, RGB_HUI, RGB_HUD),

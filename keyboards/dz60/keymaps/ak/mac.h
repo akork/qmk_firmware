@@ -5,9 +5,16 @@
 #define CANCEL _ESC
 #define CANCEL2 C(_RBR)
 // #define FSCR G(_UP)
-#define FSCR _F15
-#define LSCR _F17
-#define RSCR _F18
+
+#define MAGIC _F19
+
+#define FSCR C(_F18)
+#define LSCR C(A(_F18))
+#define RSCR C(A(S(_F18)))
+
+#define SPLITRT C(_F19)
+#define OTHER C(A(_F19))
+#define DELOTHER C(A(S(_F19)))
 
 #define FSEARCH G(_F)
 #define BSEARCH G(S(_F))
@@ -26,6 +33,8 @@
 #define RTAB C(_TAB)
 #define PTAB C(_Q)
 #define KILLTAB C(_W)
+#define FILENAME A(S(_C))
+#define FILEDIR C(A(S(_C)))
 #define FILE A(S(_C))
 #define FILEDIR C(A(S(_C)))
 
