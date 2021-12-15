@@ -66,6 +66,7 @@
 #define QUE S(_SLS)
 #define RUQUE S(_7)
 
+#define EXECELL C(_ENT)
 #define DEBUG _F5
 #define CLDEBUG S(_F5)
 #define REDEBUG C(S(_F5))
