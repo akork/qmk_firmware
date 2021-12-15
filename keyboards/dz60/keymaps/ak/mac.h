@@ -24,7 +24,7 @@
 #define PENTRY A(_P)
 #define MX G(S(_P))
 #define MCOLON A(S(_SCL))
-#define RECENTF G(_P)
+#define RECENTF C(S(_P))
 #define OPEN G(_O)
 #define OPEN1 G(S(_O))
 #define UPD _F5
@@ -50,6 +50,7 @@
 #define EOSW A(_RT)
 #define BOSW A(_LT)
 #define EOL G(_RT)
+#define XEOL SS_DOWN(X_LGUI) SS_TAP(X_RIGHT) SS_UP(X_LGUI)
 #define BOL A(_M)
 #define HARDBOL G(_LT)
 #define _EOF KC_END
