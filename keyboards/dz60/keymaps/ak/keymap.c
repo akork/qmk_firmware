@@ -5,7 +5,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "mac.h"
+#include "win.h"
 
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
 

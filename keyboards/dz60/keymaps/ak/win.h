@@ -4,14 +4,16 @@
 #define KILLAPP A(_F4)
 #define CANCEL _ESC
 #define CANCEL2 C(_RBR)
-// #define FSCR G(_UP)
+
+#define MAGIC _F19
+
 #define FSCR G(_UP)
 #define LSCR G(_LT)
 #define RSCR G(_RT)
 
-#define SPLITRT C(A(S(_F20)))
-#define OTHER C(A(S(_F21)))
-#define DELOTHER C(A(S(_F22)))
+#define SPLITRT C(_F19)
+#define OTHER C(A(_F19))
+#define DELOTHER C(A(S(_F19)))
 
 #define FSEARCH C(_F)
 #define BSEARCH C(S(_F))
