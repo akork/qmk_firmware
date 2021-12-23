@@ -48,6 +48,7 @@
 #define BOSW A(_LT)
 #define EOL KC_END
 #define XEOL SS_TAP(X_END)
+#define XBOL SS_TAP(X_HOME)
 #define BOL A(_M)
 #define HARDBOL KC_HOME
 #define _EOF C(KC_END)

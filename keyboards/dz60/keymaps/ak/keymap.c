@@ -119,6 +119,7 @@ enum custom_keycodes {
    H_C,
    H_D,
    HOLD,
+   SPRNT,
 
 };
 
@@ -602,6 +603,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case BEGS:
 	send_string(XEOL " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
 	return 0;
+      case SPRNT:
+	send_string(XBOL "print(" XEOL ")");
+	return 0;
       case NCOMMA:
          send_string(", ");
          return 0;
@@ -724,7 +728,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
-      (_______,          _______, _______, _______, _______, _______, _______, G(_LBR), G(_RBR), SWAPDN, SWAPUP,   _______, _______, _______, _______,
+      (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, G(_LBR), G(_RBR), SWAPDN, SWAPUP,   _______, _______, _______, _______,
        _______,          _______, _______, _______, _______, _______,          _______, S(_PGDN),S(BBOW), S(FEOW), S(_PGUP),_______,_______,_______,
        _______,          _______, _______, _______, _______, _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  S(EOL),   _______,         _______,
        _______, _______, _______, _______, _______, _______, _______,          _______, S(HARDBOL),_______,_______,_______, _______, _______, _______,
@@ -739,7 +743,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:sym
       (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    _RBR,    _______, _______, _______,
-       _______,          _______, DEBUG,   A(_O),   _BSL,    S(_BSL),          S(_6),   S(_7),   S(_QUO), S(_EQL), S(_DOT), _BSL,    _______, _______,
+       _______,          _______, DEBUG,   SPRNT,   _BSL,    S(_BSL),          S(_6),   S(_7),   S(_QUO), S(_EQL), S(_DOT), _BSL,    _______, _______,
        _______,          S(_2),   _______, _______, LSWITCH, S(_1),            BRACKS,  PARENS,  QUOTES,  S(_SCL),S(_4),    S(_3),            _______,
        _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDPRV, FINDNXT, S(_8),   QUE,     _______, _______, _______,
        _______,                   _______, _______,          _______,  NEXT,    CAPS,            _______, _______,          _______, _______, _______),
