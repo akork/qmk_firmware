@@ -1,4 +1,4 @@
-#define SPTLT G(_SPC)
+#define SPTLT G(A(_SPC))
 #define SPTLT1 G(_SPC)
 #define TERM G(_1)
 #define KILLAPP G(_Q)
@@ -51,6 +51,7 @@
 #define BOSW A(_LT)
 #define EOL G(_RT)
 #define XEOL SS_DOWN(X_LGUI) SS_TAP(X_RIGHT) SS_UP(X_LGUI)
+#define XBOL SS_DOWN(X_LGUI) SS_TAP(X_LEFT) SS_UP(X_LGUI)
 #define BOL A(_M)
 #define HARDBOL G(_LT)
 #define _EOF KC_END
@@ -72,6 +73,7 @@
 #define QUE S(_SLS)
 #define RUQUE S(_7)
 
+#define EXECELL C(_ENT)
 #define DEBUG _F5
 #define CLDEBUG S(_F5)
 #define REDEBUG C(S(_F5))
