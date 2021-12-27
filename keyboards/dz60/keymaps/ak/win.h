@@ -26,6 +26,8 @@
 #define RECENTF C(_P)
 #define OPEN C(_O)
 #define OPEN1 C(A(_O))
+#define OPEN2 C(A(S(_O)))
+#define OPENTR C(S(_E))
 #define UPD _F5
 #define SAVE C(_S)
 #define LTAB C(S(_TAB))
