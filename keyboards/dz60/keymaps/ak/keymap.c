@@ -721,10 +721,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR), C(G(_DN)),SWAPDN,SWAPUP,  C(G(_UP)),_ESC,   _______,  RESET,
-       _______,          _______, UNDO,    CUT,     _______,  G(_O),            C(A(G(_5))),_PGDN, BBOW,   FEOW,    _PGUP,  C(_K),   _______, _______,
-       G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,          _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
-       G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,          BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
+      (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, _ESC,   _______,  RESET,
+       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BOSW,   BBOW,    FEOW,    EOSW,   C(_K),   _______, _______,
+       G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,         _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
+       G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,         BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
