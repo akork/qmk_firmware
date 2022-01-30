@@ -121,6 +121,7 @@ enum custom_keycodes {
    H_D,
    HOLD,
    SPRNT,
+   SWITCHPY
 
 };
 
@@ -269,7 +270,8 @@ static uint8_t oneshot_down = 0, oneshot_fired = 0,
 static uint8_t caps = 0,
    sel_off = 0,
    mod = 0,
-   meta_up_signal = 0;
+  meta_up_signal = 0,
+  py = 0;
 
 
 
@@ -595,16 +597,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
    /* :main */
    if (record->event.pressed) {
-      clear_weak_mods();
-      send_keyboard_report();
-      switch(keycode) {
-      case CCS:
-	send_string(XEOL ";");
-	return 0;
-      case BEGS:
-	send_string(XEOL " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
-	return 0;
-      case SPRNT:
+     clear_weak_mods();
+     send_keyboard_report();
+     switch(keycode) {
+     case SWITCHPY:
+       py = (py + 1) % 2;
+       return 0;
+     case CCS:
+       send_string(XEOL ";");
+       return 0;
+     case BEGS:
+       if (py == true) {
+	 send_string(XEOL ":" SS_TAP(X_ENTER));
+       } else {
+	 send_string(XEOL " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
+       }
+       return 0;
+     case SPRNT:
 	send_string(XBOL "print(" XEOL ")");
 	return 0;
       case NCOMMA:
@@ -722,8 +731,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, _ESC,   _______,  RESET,
-       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BOSW,   BBOW,    FEOW,    EOSW,   C(_K),   _______, _______,
+      (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
+       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BOSW,   BBOW,    FEOW,    EOSW,   C(_K),    _______, _______,
        G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,         _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
        G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,         BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
