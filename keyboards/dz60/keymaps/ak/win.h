@@ -15,6 +15,7 @@
 #define OTHER C(A(_F19))
 #define DELOTHER C(A(S(_F19)))
 
+#define HELPKEY C(S(A(_H)))
 #define FSEARCH C(_F)
 #define BSEARCH C(S(_F))
 #define FINDNXT _F3
@@ -63,6 +64,7 @@
 #define DELEOW C(_DEL)
 #define SWAPUP A(_UP)
 #define SWAPDN A(_DN)
+#define NLBELOW C(A(_4))
 
 #define SWITCH KC_LALT
 

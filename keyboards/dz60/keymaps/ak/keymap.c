@@ -731,7 +731,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    DELBOW,  DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
+      (BOSW,             EOSW,    NLBELOW, DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
        _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BOSW,   BBOW,    FEOW,    EOSW,   C(_K),    _______, _______,
        G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,         _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
        G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,         BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
@@ -777,7 +777,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       (_______,          _______, CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, BSEARCH, FSEARCH, _COM,    PYBLOCK, _______, _______, _______,
        _______,          S(_0),   S(_9),   BEGS,    S(_COM), S(_DOT),          OPN1,    OPNTR,   OPN,     RECENTF, OPNHOME, _______, _______, _______,
        C_ENT,            _RBR,    _LBR,    C(_ENT), CCS,     S(_ENT),          MCOLON,  MX,      OPNHOME, S(_EQL), S(_4),   S(_3),            _______,
-       _______, _______, _______, _______, _______, C(_ENT), _______,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
+       _______, _______, _______, _______, _______, C(_ENT), HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
        _______,                   _______, _______,          COM_SPC, C(_ENT), EXECELL,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% oneshot:bra_ru
