@@ -109,6 +109,7 @@ enum custom_keycodes {
    BRACKS_RU,
    ABRACKS,
    QUOTES,
+   DQUOTES,
    CCS, // complete current statement
    BEGS,
    CCSNL,
@@ -664,6 +665,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case QUOTES:
          SEND_STRING("''" SS_TAP(X_LEFT));
          return false;
+      case DQUOTES:
+         SEND_STRING("\"\"" SS_TAP(X_LEFT));
+         return false;
       case ALTQUO:
          SEND_STRING(SS_LALT("`"));
          return false;
@@ -753,7 +757,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:sym
       (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    _RBR,    _______, _______, _______,
-       _______,          _______, OPNTR,   FSEARCH, _BSL,    S(_BSL),          S(_6),   S(_7),   S(_QUO), S(_EQL), S(_DOT), _BSL,    _______, _______,
+       _______,          _______, OPNTR,   FSEARCH, _BSL,    S(_BSL),          S(_6),   S(_7),   DQUOTES, S(_EQL), S(_QUO), _BSL,    _______, _______,
        _______,          OPNHOME, _______, SPRNT,   LSWITCH, S(_1),            BRACKS,  PARENS,  QUOTES,  S(_SCL),S(_4),    S(_3),            _______,
        _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDPRV, FINDNXT, S(_8),   QUE,     _______, _______, _______,
        _______,                   _______, _______,          _______,  NEXT,    CAPS,            _______, _______,          _______, _______, _______),
