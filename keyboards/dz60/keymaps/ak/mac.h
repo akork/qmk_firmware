@@ -16,6 +16,7 @@
 #define OTHER C(A(_F19))
 #define DELOTHER C(A(S(_F19)))
 
+#define HELPKEY C(S(A(_H)))
 #define FSEARCH G(_F)
 #define BSEARCH G(S(_F))
 #define FINDNXT _F3
@@ -25,8 +26,10 @@
 #define MX G(S(_P))
 #define MCOLON A(S(_SCL))
 #define RECENTF C(S(_P))
-#define OPEN G(_O)
-#define OPEN1 G(S(_O))
+#define OPN C(_O)
+#define OPN1 C(A(_O))
+#define OPNHOME C(A(S(_O)))
+#define OPNTR C(S(_E))
 #define UPD _F5
 #define SAVE G(_S)
 #define LTAB C(S(_TAB))
@@ -37,6 +40,7 @@
 #define FILEDIR C(A(S(_C)))
 #define FILE A(S(_C))
 #define FILEDIR C(A(S(_C)))
+#define NLBELOW C(A(_4))
 
 #define CUT G(_X)
 #define COPY G(_C)
