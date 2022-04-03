@@ -1,3 +1,4 @@
+// system level
 #define SPTLT G(A(_SPC))
 #define SPTLT1 G(_SPC)
 #define TERM G(_1)
@@ -12,6 +13,7 @@
 #define LSCR C(A(_F18))
 #define RSCR C(A(S(_F18)))
 
+// app level
 #define SPLITRT C(_F19)
 #define OTHER C(A(_F19))
 #define DELOTHER C(A(S(_F19)))
@@ -35,13 +37,14 @@
 #define LTAB C(S(_TAB))
 #define RTAB C(_TAB)
 #define PTAB C(_Q)
-#define KILLTAB C(_W)
+#define KILLTAB G(_W)
 #define FILENAME A(S(_C))
 #define FILEDIR C(A(S(_C)))
 #define FILE A(S(_C))
 #define FILEDIR C(A(S(_C)))
 #define NLBELOW C(A(_4))
 
+// navigation & editing
 #define CUT G(_X)
 #define COPY G(_C)
 #define PASTE G(_V)
@@ -51,8 +54,8 @@
 #define REDO G(S(_Z))
 #define FEOW A(_RT)
 #define BBOW A(_LT)
-#define EOSW A(_RT)
-#define BOSW A(_LT)
+#define EOSW C(_RT)
+#define BOSW C(_LT)
 #define EOL G(_RT)
 #define XEOL SS_DOWN(X_LGUI) SS_TAP(X_RIGHT) SS_UP(X_LGUI)
 #define XBOL SS_DOWN(X_LGUI) SS_TAP(X_LEFT) SS_UP(X_LGUI)
@@ -64,7 +67,7 @@
 #define COMMENT G(_SLS)
 #define DELBOL C(S(_BSP))
 #define DELEOL C(S(_DEL))
-#define DELBOW C(_BSP)
+#define DELBOW A(_BSP)
 #define DELEOW C(_DEL)
 #define SWAPUP A(_UP)
 #define SWAPDN A(_DN)

@@ -122,7 +122,7 @@ enum custom_keycodes {
    H_D,
    HOLD,
    SPRNT,
-   SWITCHPY
+   SWITCHPY,
 
 };
 
@@ -382,13 +382,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
    // oneshot processing:
    if (record->event.pressed) {
-      if (keycode != OSL_EDI) oneshot_fired_check(1UL << EDI_LR);
-      if (keycode != OSL_NUM) oneshot_fired_check(1UL << NUM_LR);
-      if (keycode != OSL_SYM) oneshot_fired_check(3UL << SYM_LR);
-      if (keycode != OSL_BRA) oneshot_fired_check(3UL << BRA_LR);
-      if (keycode != OSL_IDE) oneshot_fired_check(1UL << IDE_LR);
-      if (keycode != OSL_REF) oneshot_fired_check(1UL << REF_LR);
-   }
+   /*    if (keycode != OSL_EDI) oneshot_fired_check(1UL << EDI_LR); */
+   /*    if (keycode != OSL_NUM) oneshot_fired_check(1UL << NUM_LR); */
+   /*    if (keycode != OSL_SYM) oneshot_fired_check(3UL << SYM_LR); */
+   /*    if (keycode != OSL_BRA) oneshot_fired_check(3UL << BRA_LR); */
+   /*    if (keycode != OSL_IDE) oneshot_fired_check(1UL << IDE_LR); */
+   /*    if (keycode != OSL_REF) oneshot_fired_check(1UL << REF_LR); */
+      oneshot_fired_check(1UL << EDI_LR);
+      oneshot_fired_check(1UL << NUM_LR);
+      oneshot_fired_check(3UL << SYM_LR);
+      oneshot_fired_check(3UL << BRA_LR);
+      oneshot_fired_check(1UL << IDE_LR);
+      oneshot_fired_check(1UL << REF_LR);
+      if ((keycode != NEXT) && (1UL << NEXT_LR & layer_state)) oneshot_next_fired = 1;
+}
    switch (keycode) {
    case OSL_REF: return oneshot_process(record, REF_LR, 0);
    case OSL_IDE: return oneshot_process(record, IDE_LR, 0);
@@ -614,6 +621,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	 send_string(XEOL " {}" SS_TAP(X_LEFT) SS_TAP(X_ENTER));
        }
        return 0;
+     case PYBLOCK:
+       send_string(SS_TAP(X_LEFT) XEOL ":" SS_TAP(X_ENTER));
+       return 0;
      case SPRNT:
 	send_string(XBOL "print(" XEOL ")");
 	return 0;
@@ -705,10 +715,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* left_shift,grave_accent_and_tilde,z,x,c,     v,       b,                n,       m,       comma,   period,  slash,   right_shift,,     , */
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
-      LAYOUT_all //%% plain:en 
-      (_ESC,            _SCL,     NEXT,    S(_MIN), _TAB,    S(_5),  _______,  S(_EQL), _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,      KC_END,
-       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE, _G,      _C,      _R,      _F,      _K,      _SLS,    _F3,
-       OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
+      LAYOUT_all //%% plain:en
+      (_ESC,            _SCL,     _SLS,    S(_MIN), _TAB,    S(_5),  _______,  S(_EQL), _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,      KC_END,
+       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE, _G,      _C,      _R,      _F,      _K,      NEXT,    _F3,
+      OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
        _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
        _LCTL,                     _LGUI,   RALT,             _SPC,   OSL_EDI,  MACMETA, RCMD,             _VDN,             _VUP,    MACMETA, _F20),
 
@@ -736,7 +746,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:edi
       (BOSW,             EOSW,    NLBELOW, DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
-       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BOSW,   BBOW,    FEOW,    EOSW,   C(_K),    _______, _______,
+       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BBOW,   BOSW,    EOSW,    FEOW,    C(_K),    _______, _______,
        G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,         _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
        G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,         BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
@@ -773,7 +783,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       LAYOUT_all //%% oneshot:next
       (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
        _______,          _______, _______, _______, _______, _______,          _______, NCOLON,  NCOMMA,  _______, _______, _______, _______, _______,
-       _______,          _______, _______, _______, CCS,     _______,          _______, _______, _______, _______, _______, _______,          _______,
+       _______,          _______, _______, _______, _______, _______,          _______, PYBLOCK, _______, NCOLON,  _______, _______,          _______,
        _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
