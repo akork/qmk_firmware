@@ -5,7 +5,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "mac.h"
+#include "win.h"
 
 
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
@@ -745,10 +745,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    NLBELOW, DELEOW,  _BOF,    _EOF,    _______, G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
-       _______,          _______, UNDO,    CUT,     _______,  G(_O),           _______,  BBOW,   BOSW,    EOSW,    FEOW,    C(_K),    _______, _______,
-       G(S(_D)),         ALL,     PASTE,   COPY,    DELBOW,   COMMENT,         _LT,     _DN,     _UP,     _RT,     EOL,    _DEL,               _______,
-       G(_X),   _______, CC_PLS,  CC_MIN,  COMMENT, DUPL,     _______,         BOL,     HARDBOL, DELEOL,  DELBOL,  G(_DN), _______, _______, _______,
+      (BOSW,             EOSW,    NLBELOW, DELEOW,  _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
+       _______,          _______, UNDO,    DELBOW,  _______, G(_O),            _______,  BBOW,   BOSW,    EOSW,    FEOW,    C(_K),   _______, _______,
+       G(S(_D)),         ALL,     PASTE,   COPY,    EOL,     COMMENT,          _LT,     _DN,     _UP,     _RT,     DELBOL,  DELEOL,           _______,
+       G(_X),   _______, CC_PLS,  CC_MIN,  CUT,     DUPL,     _______,         BOL,     HARDBOL, DELEOL,  _DEL,    G(_DN),  _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
@@ -783,7 +783,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       LAYOUT_all //%% oneshot:next
       (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
        _______,          _______, _______, _______, _______, _______,          _______, NCOLON,  NCOMMA,  _______, _______, _______, _______, _______,
-       _______,          _______, _______, _______, _______, _______,          _______, PYBLOCK, _______, NCOLON,  _______, _______,          _______,
+       _______,          _______, _______, _______, PHONY,   PYBLOCK,          _______, NCOLON,  _______, NCOLON,  _______, _______,          _______,
        _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
