@@ -745,15 +745,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    NLBELOW, DELEOW,  _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP, SWITCHPY, _______,  RESET,
-       _______,          _______, UNDO,    DELBOW,  _______, G(_O),            _______,  BBOW,   BOSW,    EOSW,    FEOW,    C(_K),   _______, _______,
+      (BOSW,             EOSW,    NLBELOW, DELEOW,  _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP,  _DEL,    _______, RESET,
+       _______,          _______, UNDO,    DELBOW,  _______, G(_O),            _______,  BOSW,   BOW,     EOW,     EOSW,    _______, _______, _______,
        G(S(_D)),         ALL,     PASTE,   COPY,    EOL,     COMMENT,          _LT,     _DN,     _UP,     _RT,     DELBOL,  DELEOL,           _______,
        G(_X),   _______, CC_PLS,  CC_MIN,  CUT,     DUPL,     _______,         BOL,     HARDBOL, DELEOL,  _DEL,    G(_DN),  _______, _______, _______,
        _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
       (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, G(_LBR), SWAPDN,  S(_PGDN),S(_PGUP),SWAPUP,  _______, _______, _______,
-       _______,          _______, _______, _______, _______, _______,          _______, S(BOSW), S(BBOW), S(FEOW), S(EOSW), _______,_______,_______,
+       _______,          _______, _______, _______, _______, _______,          _______, S(BOSW), S(BOW),  S(EOW), S(EOSW), _______,_______,_______,
        _______,          _______, _______, _______, _______, _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  S(EOL),  _______,         _______,
        _______, _______, _______, _______, _______, _______, _______,          _______, S(HARDBOL),_______,_______,_______, _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
@@ -804,7 +804,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       LAYOUT_all //%% oneshot:ide
       (_______,          _______, _______, G(_B),   _SCL,    _______, _______, _______, KILLTAB, KILLAPP, G(S(_E)),CX_3,    HYPR(_LBR),_______,HYPR(_RBR),
        _______,          _______, _______, _______, _______, S(_F6),           _SCL,    SPLITRT, OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
-       _______,          _______, _______, _______, DEBUG,   A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
+       _______,          _______, _______, _______, _DEBUG,  A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
        _______, _______, _______, _______, _______, _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
        _______,                   _______, _______,          SCLSPC,  SCLSPC,  CCS,              _______, _______,          _______, RGB_HUI, RGB_HUD),
 

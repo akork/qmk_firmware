@@ -38,6 +38,7 @@
 #define FILENAME A(S(_C))
 #define FILEDIR C(A(S(_C)))
 
+// navigation & editing 
 #define CUT S(KC_DELETE)
 #define COPY C(KC_INSERT)
 #define PASTE S(KC_INSERT)
@@ -45,8 +46,8 @@
 #define ALL C(_A)
 #define UNDO C(_Z)
 #define REDO C(S(_Z))
-#define FEOW C(_RT)
-#define BBOW C(_LT)
+#define EOW C(_RT)
+#define BOW C(_LT)
 #define EOSW A(_RT)
 #define BOSW A(_LT)
 #define EOL KC_END
@@ -75,6 +76,6 @@
 #define RUQUE S(_7)
 
 #define EXECELL C(_ENT)
-#define DEBUG _F5
+#define _DEBUG _F5
 #define CLDEBUG S(_F5)
 #define REDEBUG C(S(_F5))
