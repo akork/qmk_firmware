@@ -29,6 +29,7 @@
 #define OPN1 C(A(_O))
 #define OPNHOME C(A(S(_O)))
 #define OPNTR C(S(_E))
+#define DIRED C(A(S(_E)))
 #define UPD _F5
 #define SAVE C(_S)
 #define LTAB C(S(_TAB))
@@ -38,8 +39,9 @@
 #define FILENAME A(S(_C))
 #define FILEDIR C(A(S(_C)))
 
-// navigation & editing 
-#define CUT S(KC_DELETE)
+// navigation & editing
+#define DELETE S(KC_DELETE)
+#define CUT C(_X)
 #define COPY C(KC_INSERT)
 #define PASTE S(KC_INSERT)
 #define PASTEI C(S(_V))
