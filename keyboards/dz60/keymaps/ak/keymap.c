@@ -1,16 +1,11 @@
 // -*- compile-command: "cd ../../../../ && make dz60:ak-first:dfu" -*-
 
-
-// option + f12 terminal
-
 #include QMK_KEYBOARD_H
 
+#include "keydef.h"
 #include "win.h"
 
-
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
-
-// static bool isCmdSetByMeta = false;
 
 enum custom_keycodes {
    TEST = SAFE_RANGE,
@@ -20,10 +15,19 @@ enum custom_keycodes {
    SQUO,
    SPARENS,
    SBRACKS,
-   STICKY_SEL,
+   BSEL,
+   FSEL,
+   ABORTSEL,
    PHONY,
    NEXT,
    NCOMMA,
+   NNCOMMA,
+   NNCOLON,
+   NNDOT,
+   NNSPACE,
+   NNENTER,
+   SELLINE,
+   MRKLINE,
    NCOLON,
    C_ENT,
    COUT,
@@ -31,7 +35,6 @@ enum custom_keycodes {
    NAMESPACE,
    PLUSPLUS,
    MOD_SWITCH,
-   JOKER,
    JOIN_L,
    DUP,
    L_SEL,
@@ -40,10 +43,8 @@ enum custom_keycodes {
    PGDN,
    EQL_EQL,
    EQL_SPC,
-   ENDL_JOKER,
    RT2_SPC,
    SEARCH,
-   LEADER,
    PYBLOCK,
    CBLOCK,
    BSP,
@@ -120,9 +121,14 @@ enum custom_keycodes {
    H_B,
    H_C,
    H_D,
-   HOLD,
    SPRNT,
+   FPRNT,
    SWITCHPY,
+   DDD,
+   ALTF4,
+   APPKILL,
+   CELLUP,
+   CELLDN,
 
 };
 
@@ -131,145 +137,33 @@ enum {
    EN_LR,
    RU_LR,
    MACOS_LR,
+   APPSWITCH_LR,
    NUM_LR,
    EDI_LR,
    SEL_LR,
    SEL2_LR,
+   SEL3_LR,
+   SEL4_LR,
    SYM_LR,
    RU_SYM_LR,
-   NEXT_LR, // 10
+   NEXT_LR,
    BRA_LR,
    RU_BRA_LR,
    IDE_LR,
    REF_LR,
 };
 
-#define _LSFT KC_LSFT
-#define _LCTL KC_LCTL
-#define _LGUI KC_LGUI
-#define _LALT KC_LALT
-
-#define TR KC_TRNS
-
-#define _U KC_U
-#define _1 KC_1
-#define _2 KC_2
-#define _3 KC_3
-#define _4 KC_4
-#define _5 KC_5
-#define _6 KC_6
-#define _7 KC_7
-#define _8 KC_8
-#define _9 KC_9
-#define _0 KC_0
-#define _A KC_A
-#define _B KC_B
-#define _C KC_C
-#define _D KC_D
-#define _E KC_E
-#define _F KC_F
-#define _G KC_G
-#define _H KC_H
-#define _I KC_I
-#define _J KC_J
-#define _K KC_K
-#define _L KC_L
-#define _M KC_M
-#define _N KC_N
-#define _O KC_O
-#define _P KC_P
-#define _Q KC_Q
-#define _R KC_R
-#define _S KC_S
-#define _T KC_T
-#define _U KC_U
-#define _V KC_V
-#define _W KC_W
-#define _X KC_X
-#define _Y KC_Y
-#define _Z KC_Z
-
-#define _F1 KC_F1
-#define _F2 KC_F2
-#define _F3 KC_F3
-#define _F4 KC_F4
-#define _F5 KC_F5
-#define _F6 KC_F6
-#define _F7 KC_F7
-#define _F8 KC_F8
-#define _F9 KC_F9
-#define _F10 KC_F10
-#define _F11 KC_F11
-#define _F12 KC_F12
-#define _F13 KC_F13
-#define _F14 KC_F14
-#define _F15 KC_F15
-#define _F16 KC_F16
-#define _F17 KC_F17
-#define _F18 KC_F18
-#define _F19 KC_F19
-#define _F20 KC_F20
-#define _F21 KC_F21
-#define _F22 KC_F22
-#define _F23 KC_F23
-#define _F24 KC_F24
-
-#define _RT KC_RGHT
-#define _LT KC_LEFT
-#define _UP KC_UP
-#define _DN KC_DOWN
-#define _VUP KC__VOLUP
-#define _VDN KC__VOLDOWN
-
-#define _CSL KC_BSLS
-#define _COM KC_COMM
-#define _MIN KC_MINS
-#define _TAB KC_TAB
-#define _TB KC_TAB
-#define _CAP KC_CAPS
-#define _LBR KC_LBRC
-#define _RBR KC_RBRC
-#define _NO KC_NO
-#define _BSP KC_BSPC
-#define _ESC KC_ESC
-#define _BSL KC_BSLS
-#define _SPC KC_SPC
-#define _DOT KC_DOT
-#define _SLS KC_SLSH
-#define _QUO KC_QUOT
-#define _ENT KC_ENT
-#define _DOW KC_DOWN
-#define _UP KC_UP
-#define _EQL KC_EQL
-#define _SCL KC_SCLN
-#define _GRV KC_GRV
-#define CTA(x) LCTL(LALT(x))
-#define ALT(x) LALT(x)
-#define CTL(x) LCTL(x)
-#define GUI(x) LGUI(x)
-#define GUA(x) LGUI(LALT(x))
-#define ALG(x) LALT(LGUI(x))
-#define GACS(x) LGUI(LALT(LCTL(LSFT(x))))
-#define _PGUP KC_PGUP
-#define _PGDN KC_PGDN
-#define _HOME KC_HOME
-#define _END KC_END
-#define _DEL KC_DELETE
-#define GR(x) RGUI(x)
-/* #define S(x) RSHIFT(x) */
-
-#define SS_RGUI(string) SS_DOWN(X_RGUI) string SS_UP(X_RGUI)
 
 static uint16_t timer, rcmd_timer;
 static const uint16_t timer_threshold = 250;
-static const uint16_t oneshot_threshold = 700, oneshot_next_threshold = 1500;
+static const uint16_t oneshot_threshold = 700;
 static uint8_t rgblight_mode_current = RGBLIGHT_MODE_KNIGHT + 1;
 
-static uint16_t oneshot_timer, oneshot_next_timer, esc_promise_timer;
-static uint8_t oneshot_down = 0, oneshot_fired = 0,
-   oneshot_next_down = 0, oneshot_next_fired = 0;
+static uint16_t oneshot_timer;
+static uint8_t oneshot_down = 0, oneshot_fired = 0;
 static uint8_t caps = 0,
    sel_off = 0,
+   sel2_off = 0,
    mod = 0,
   meta_up_signal = 0,
   py = 0;
@@ -288,6 +182,7 @@ void keyboard_post_init_user(void) {
    /* rgblight_mode_noeeprom(rgblight_mode_current); // sets mode to Fast breathing without saving */
    /* rgblight_disable_noeeprom(); */
 }
+
 
 uint32_t layer_state_set_user(uint32_t state) {
    if (1UL << RU_LR & state) {
@@ -336,15 +231,21 @@ void matrix_scan_user(void) {
    oneshot_check(3UL << SYM_LR);
    oneshot_check(3UL << BRA_LR);
 
-   if (biton32(layer_state) == NEXT_LR) {
-      if ((!oneshot_next_down && oneshot_next_fired) ||
-          (!oneshot_next_down && timer_elapsed(oneshot_next_timer) > oneshot_next_threshold)) {
-         layer_off(NEXT_LR);
-      }
-   }
+   /* if (biton32(layer_state) == NEXT_LR) { */
+      /* if ((!oneshot_next_down && oneshot_next_fired) || */
+          /* (!oneshot_next_down && timer_elapsed(oneshot_next_timer) > oneshot_next_threshold)) { */
+         /* layer_off(NEXT_LR); */
+      /* } */
+   /* } */
+
    if (sel_off) {
-      layer_and(~(3UL << SEL_LR));
+      layer_and(~(15UL << SEL_LR));
       sel_off = 0;
+   }
+   if (sel2_off) {
+     layer_off(SEL3_LR);
+     layer_off(SEL4_LR);
+     sel2_off = 0;
    }
 }
 
@@ -370,7 +271,26 @@ bool oneshot_process(keyrecord_t *record, uint8_t layer_n, bool check_ru) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
    uint8_t layer = layer_switch_get_layer(record->event.key); // from which layer keycode flew in
-   if (layer == SEL2_LR && record->event.pressed) sel_off = 1;
+   // turn off ru_lr upon specific keys
+   if (record->event.pressed) {
+      if (keycode == _ENT ||
+          keycode == G(_ENT) ||
+          keycode == G(A(_ENT)) ||
+          keycode == MACMETA ||
+	  keycode == BSEL ||
+	  keycode == OSL_REF) {
+         if (1UL << RU_LR & layer_state)
+            ru_turn_off();
+      }
+   }
+
+   // select layers magic
+   if (record->event.pressed) {
+     if (((layer == SEL_LR) || (layer == SEL3_LR)) && keycode != S(_RT)) sel2_off = 1;
+     if (((layer == SEL4_LR) || (layer == SEL2_LR)) && record->event.pressed) sel_off = 1;
+   }
+
+   // for ctrl-tab in emacs
    if (layer == MACOS_LR) {
       if (keycode == LTAB ||
           keycode == RTAB) {
@@ -381,56 +301,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
    }
 
    // oneshot processing:
+   // setting oneshot_fired flag upon every keycode with oneshot layers enabled
    if (record->event.pressed) {
-   /*    if (keycode != OSL_EDI) oneshot_fired_check(1UL << EDI_LR); */
-   /*    if (keycode != OSL_NUM) oneshot_fired_check(1UL << NUM_LR); */
-   /*    if (keycode != OSL_SYM) oneshot_fired_check(3UL << SYM_LR); */
-   /*    if (keycode != OSL_BRA) oneshot_fired_check(3UL << BRA_LR); */
-   /*    if (keycode != OSL_IDE) oneshot_fired_check(1UL << IDE_LR); */
-   /*    if (keycode != OSL_REF) oneshot_fired_check(1UL << REF_LR); */
       oneshot_fired_check(1UL << EDI_LR);
       oneshot_fired_check(1UL << NUM_LR);
       oneshot_fired_check(3UL << SYM_LR);
       oneshot_fired_check(3UL << BRA_LR);
       oneshot_fired_check(1UL << IDE_LR);
       oneshot_fired_check(1UL << REF_LR);
-      if ((keycode != NEXT) && (1UL << NEXT_LR & layer_state)) oneshot_next_fired = 1;
-}
+   }
+   // machinary to enable/disable oneshot layers
    switch (keycode) {
-   case OSL_REF: return oneshot_process(record, REF_LR, 0);
-   case OSL_IDE: return oneshot_process(record, IDE_LR, 0);
-   case OSL_EDI: return oneshot_process(record, EDI_LR, 0);
-   case OSL_SYM: return oneshot_process(record, SYM_LR, 1);
-   case OSL_BRA: return oneshot_process(record, BRA_LR, 1);
-   case OSL_NUM: return oneshot_process(record, NUM_LR, 0);
+    case OSL_REF: return oneshot_process(record, REF_LR, 0);
+    case OSL_IDE: return oneshot_process(record, IDE_LR, 0);
+    case OSL_EDI: return oneshot_process(record, EDI_LR, 0);
+    case OSL_SYM: return oneshot_process(record, SYM_LR, 1);
+    case OSL_BRA: return oneshot_process(record, BRA_LR, 1);
+    case OSL_NUM: return oneshot_process(record, NUM_LR, 0);
    }
 
+   // CAPS CAPS CAPS CAPS CAPS
    if (record->event.pressed) {
-      if (caps == 1) {
+     if (caps == 1) { // стоп слова без дальнейшей обработки
          if (keycode == CAPS ||
              keycode == _ESC ||
-             keycode == MACMETA) {
+	     keycode == OSM(MOD_LSFT) ||
+	     keycode == _TAB ||
+	     keycode == _DN ||
+	     keycode == _UP) {
             caps = 0;
             unregister_code(KC_LSHIFT);
             return 0;
          }
-
-         if ((keycode >= OSL_NUM &&
-              keycode <= OSL_REF) ||
-             keycode == _SPC) {
-            caps = 0;
+         if (keycode == MACMETA || // стоп слова с дальнейшей обработкой
+	     keycode == BSEL) {
+	   caps = 0;
             unregister_code(KC_LSHIFT);
          }
-      }}
-
-   /* turn off ru on certain keys */
-   if (record->event.pressed) {
-      if (keycode == _ENT ||
-          keycode == G(_ENT) ||
-          keycode == G(A(_ENT)) ||
-          keycode == MACMETA) {
-         if (1UL << RU_LR & layer_state)
-            ru_turn_off();
+	 // если активно что-то выше 3 слоя
+	 if (0b11111111111111111111111111111000 & layer_state) {
+	   unregister_code(KC_LSHIFT);
+	 }
       }
    }
 
@@ -440,7 +351,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return 0;
    case CAPS:
       if (record->event.pressed) {
-         caps = 1;
+	caps = 1; // layer emulates with flag
          register_code(KC_LSHIFT);
       }
       return 0;
@@ -454,66 +365,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
          }
          return 0;
       }
-   case NEXT:
-      /* layer_off(SYM_LR); */
-      /* layer_off(SYM_RU_LR); */
+   case BSEL:
       if (record->event.pressed) {
-         send_string(SS_TAP(X_RIGHT));
-         oneshot_next_timer = timer_read();
-         oneshot_next_down = 1;
-         oneshot_next_fired = 0;
-         layer_on(NEXT_LR);
-      } else {
-         oneshot_next_down = 0;
+	 layer_or(15UL << SEL_LR);
+	 send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) SS_UP(X_LSHIFT));
       }
       return 0;
-   case STICKY_SEL:
+   case FSEL:
       if (record->event.pressed) {
          layer_on(SEL_LR);
          layer_on(SEL2_LR);
-      } else {
+	 send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) SS_TAP(X_LEFT) XEOW SS_UP(X_LSHIFT));
       }
       return 0;
-   case LEADER:
+   case ABORTSEL:
       if (record->event.pressed) {
-         send_string(SS_LCTRL(SS_RGUI("x")));
-      } else { }
-      return false;
-   case JOKER:
-      if (record->event.pressed) {
-         esc_promise_timer = timer_read();
-         register_code(_LGUI);
-      } else {
-         unregister_code(_LGUI);
+	 send_string(SS_TAP(X_RIGHT));
       }
-      return 0;
+      return 0; 
    case TEST:
-      send_string(SS_DOWN(X_LSHIFT) SS_DOWN(X_LGUI) SS_TAP(X_LEFT) SS_UP(X_LGUI) SS_UP(X_LSHIFT));
-      /* rgblight_mode_noeeprom(rgblight_mode_current++); // sets mode to Fast breathing without saving */
+      /* send_string(SS_DOWN(X_LSHIFT) SS_DOWN(X_LGUI) SS_TAP(X_LEFT) SS_UP(X_LGUI) SS_UP(X_LSHIFT)); */
+      rgblight_mode_noeeprom(rgblight_mode_current++); // sets mode to Fast breathing without saving
       return false;
+
+      
    case MACMETA:
       if (record->event.pressed) {
          timer = timer_read();
          layer_on(MACOS_LR);
       } else {
-         layer_off(MACOS_LR);
+	    layer_and(~(3UL << MACOS_LR));
          if (timer_elapsed(timer) < timer_threshold) {
             register_code(KC_ENTER);
             unregister_code(KC_ENTER);
             unregister_code(KC_LGUI);
             unregister_code(KC_LALT);
          } else {
-            unregister_code(KC_LGUI);
+	    
+	    unregister_code(KC_LGUI);
             unregister_code(KC_LALT);
             if (meta_up_signal) {
-               /* register_code(KC_LCTRL); */
-               /* register_code(KC_LALT); */
-               /* register_code(KC_LSHIFT); */
                register_code(MAGIC);
                unregister_code(MAGIC);
-               /* unregister_code(KC_LCTRL); */
-               /* unregister_code(KC_LALT); */
-               /* unregister_code(KC_LSHIFT); */
             }
 
          }
@@ -526,7 +419,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
    }
 
    // :cmd_tab
-   if (biton32(layer_state) == MACOS_LR) {
+   if (1UL << MACOS_LR & layer_state) {
       if (record->event.pressed) {
          switch(keycode) {
          case G(A(_C)):
@@ -552,11 +445,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                if (get_mods() & MOD_BIT(KC_LSHIFT)) {
                   del_mods(MOD_BIT(KC_LSHIFT));
                }
-               del_mods(MOD_BIT(SWITCH));
+               /* del_mods(MOD_BIT(SWITCH)); // important! the next processing should enable alt from scratch */
                register_code(SWITCH);
                register_code(KC_TAB);
                unregister_code(KC_TAB);
+	       layer_or(1UL << APPSWITCH_LR);
             }
+	    
             return false;
          case SCMDTAB:
             if (record->event.pressed) {
@@ -572,8 +467,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             register_code(KC_Q);
             unregister_code(KC_Q);
             return false;
-         default:
-            unregister_cmd_after_cmdtab();
+         /* default: */
+	   /* if (layer <= APPSWITCH_LR) { */
+	     /* unregister_mods(MOD_LGUI); */
+	     /* unregister_mods(MOD_LALT); // important! the next processing should enable alt from scratch */
+	   /* } */
+
          } // END: CMD-TAB like keycodes
       }
    }
@@ -605,9 +504,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
    /* :main */
    if (record->event.pressed) {
+     
+     if (layer == SEL4_LR) { // some stuff for exiting selection mode in emacs for NN-commands
+     send_string(SS_TAP(X_F19) SS_TAP(X_RIGHT));
+   }
      clear_weak_mods();
      send_keyboard_report();
      switch(keycode) {
+     case APPKILL: // for appswitcher (doesn't lift alt)
+       send_string(SS_LCTL("w"));
+       /* register_code(KC_LALT); */
+       /* register_code(KC_LCTL); */
+       /* register_code(_W); */
+       /* unregister_code(_W); */
+       /* unregister_code(KC_LCTL); */
+       return 0;
+     case CELLDN:
+       send_string(SS_TAP(X_ESC) SS_TAP(X_DOWN) "e");
+       return 0;
+     case CELLUP:
+       send_string(SS_TAP(X_ESC) SS_TAP(X_UP) "e");
+       return 0;
      case SWITCHPY:
        py = (py + 1) % 2;
        return 0;
@@ -627,13 +544,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      case SPRNT:
 	send_string(XBOL "print(" XEOL ")");
 	return 0;
+     case FPRNT:
+	send_string(XBOL "print(f'{" XEOL "=}')");
+	return 0;
       case NCOMMA:
          send_string(", ");
          return 0;
+      case NNCOMMA:
+	send_string(", ");
+         return 0;	 
+      case NNCOLON:
+	send_string(":");
+         return 0;	 
+      case NNDOT:
+	send_string(". ");
+         return 0;	 
+      case NNSPACE:
+	send_string(" ");
+	return 0;
+      case NNENTER:
+	send_string(SS_TAP(X_ENTER));
+	return 0;
       case NCOLON:
          send_string(": ");
          return 0;
-      case C_ENT:
+     case SELLINE:
+       send_string(SS_UP(X_LSHIFT) SS_TAP(X_LEFT) XBOL SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) XEOL
+		   SS_TAP(X_DOWN) XBOL SS_UP(X_LSHIFT));
+       return 0;
+     case MRKLINE:
+       send_string(SS_UP(X_LSHIFT) XEOL SS_DOWN(X_LSHIFT) SS_TAP(X_LEFT) XBOL SS_UP(X_LSHIFT));
+       return 0;
+     case C_ENT:
          send_string(SS_LCTRL(SS_TAP(X_ENTER)) SS_TAP(X_ENTER));
          return 0;
       case SQUO:
@@ -678,6 +620,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case DQUOTES:
          SEND_STRING("\"\"" SS_TAP(X_LEFT));
          return false;
+     case DDD:
+       send_string("...");
+       return 0;
       case ALTQUO:
          SEND_STRING(SS_LALT("`"));
          return false;
@@ -698,12 +643,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
          return 0;
       }}
 
-
+   
+   if (caps == 1) {
+     if (0b11111111111111111111111111111000 & layer_state) {
+       /* unregister_code(KC_LSHIFT); */
+     } else {
+       register_code(KC_LSHIFT);
+     }
+    }
 
    return true;}
 
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-}
+ }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
    {
@@ -716,67 +668,88 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
       /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
       LAYOUT_all //%% plain:en
-      (_ESC,            _SCL,     _SLS,    S(_MIN), _TAB,    S(_5),  _______,  S(_EQL), _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,      KC_END,
-       STICKY_SEL, OSM(MOD_LSFT), OSL_SYM, _O,      _BSP,    _MIN,             OSL_IDE, _G,      _C,      _R,      _F,      _K,      NEXT,    _F3,
-      OSL_NUM,          _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      OSL_REF,          G(A(_ENT)),
-       _LSFT,    _A,     _J,      _Q,      S(_2),   _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
-       _LCTL,                     _LGUI,   RALT,             _SPC,   OSL_EDI,  MACMETA, RCMD,             _VDN,             _VUP,    MACMETA, _F20),
+      (_ESC,             S(_BSL), PARENS,  S(_MIN), _TAB,    S(_5),   _______, S(_2),   _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,      S(_F10),
+       BRACKS,           BSEL,    OSL_SYM, _O,      _EQL,    _MIN,             QUOTES,  _G,      _C,      _R,      _F,      _K,      C(_ENT),  _F3,
+       OSM(MOD_LSFT),    _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      _BSP,    G(A(_ENT)),
+       _LSFT,    _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
+       OSL_EDI,                   _LGUI,   RALT,             _SPC,    OSL_NUM, MACMETA, RCMD,             _LCTL,            OSL_REF, OSL_REF, _LCTL),
 
       LAYOUT_all //%% plain:ru
       (_______,          _______, _SCL,    _______, _______, _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
-       _______,          _______, _______, _J,      _______, _______,          _Q,      _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
-       _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _W,               _______,
+       _W,               _______, _______, _J,      _______, _______,          _Q,      _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
+       _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _______,          _______,
        _DOT, _______,    _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% mod:os
-      (MOD_SWITCH,       _______, LSCR,    FSCR,    RSCR,    _______, _______,   _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
-       WIN,              _______, HOLD,    CUT,     SPTLT1,  _______,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
-       _______,          CUT,     TERM,    COPY,    SPTLT,   FILENAME,         HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    FILENAME,XCDCLIP,          _______,
-       _______, _______, G(_A),   _______, _______, FILEDIR, _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
+      (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    _______, _______, _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
+       WIN,              _______, _______, BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
+       _______,          CUT,     TERM,    EMACS,   MTTASK,  MTTASK3,          HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    CWD,     XCDCLIP,          _______,
+       _______, _______, G(_A),   _______, _______, PATH,    _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
        _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
+
+      LAYOUT_all //%% appswitch
+      (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, _______, _______, _______, _______,          _______, KILLAPP, ALTF4,   APPDN,   APPUP,   _______, _______, _______,
+       _______,          _______, _______, _______, _______, _______,          _______, _______, _______, APPDN,   APPKILL, APKILL,           _______,
+       _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% oneshot:num
       (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
        _______,          _______, _______, _______, COUT,    CIN,              NAMESPACE,COUT,   _0,      _9,      CIN, _______, _______, _______,
-       _CAP,             _______, _______, _______, CANCEL,  CANCEL2,          _6,      _1,      _2,      _3,      _4,      _5,               _______,
+       _CAP,             _______, _______, _______, _ESC,    _______,          _6,      _1,      _2,      _3,      _4,      _5,               _______,
        _______, _______, _______, _______, REDEBUG, CLDEBUG, _______,          _7,      _8,      _______, CC_PLS,  CC_MIN,  _______, _______, _______,
        _______,                   _______, _______,          SCLSPC, _______, CCS,               _______, _______,          _______, _______, _______),
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             EOSW,    NLBELOW, DELEOW,  _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP,  _DEL,    _______, RESET,
-       _______,          _______, UNDO,    DELBOW,  _______, G(_O),            _______,  BOSW,   BOW,     EOW,     EOSW,    _______, _______, _______,
-       G(S(_D)),         ALL,     PASTE,   COPY,    EOL,     COMMENT,          _LT,     _DN,     _UP,     _RT,     DELEOL,  DELBOL,           _______,
-       G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,     _______,         BOL,     HARDBOL, DELEOL,  _DEL,    G(_DN),  _______, _______, _______,
-       _______,                   _______, _______,          _BSP,    _______, _______,          _______, _______,          _______, _______, _______),
+      (BOSW,             BOSW,    EOSW,    UNDO,    _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP,  _DEL,    _______, RESET,
+       ALL,              CUT,     PASTE,   DELBOW,  DELEOW,  G(_O),            _______,  BOSW,   BOW,     FBOW,    EOW,     C(_R),   _______, C(_F4),
+       G(S(_D)),         CUT,     PASTE,   COPY,    EOL,     COMMENT,          _LT,     _DN,     _UP,     _RT,     DELEOL,  _______,          _______,
+       G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          BOL,     HARDBOL, DELEOL,  _DEL,    G(_DN),  _______, _______, _______,
+       _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
       (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, _______, SWAPDN,  S(_PGDN),S(_PGUP),SWAPUP,  _______, _______, _______,
-       _______,          _______, _______, _______, _______, _______,          _______, S(BOSW), S(BOW),  S(EOW),  S(EOSW), _______, _______, _______,
+       _______,          _______, _______, _______, _______, _______,          _______, _______, S(BOW),  S(FBOW), S(EOW),  _______, _______, _______,
        _______,          _______, _______, _______, S(EOL),  _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  _______, _______,          _______,
        _______, _______, _______, _______, _______, _______, _______,          S(BOL),  S(HARDBOL),_______,_______,_______, _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel2
-      (_______,          _______, _______, SBRACKS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          _______, PHONY,   SPARENS, _BSP,    SQUO,             _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          DUPL,    PASTE,   COPY,    _______, COMMENT,          _______, _______, _______, _______, _______, _______,          _______,
+      (_______,          _______, _______, SBRACKS, _DEL,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, PHONY,   SPARENS, _______, SQUO,             _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          DUPL,    PASTE,   COPY,    _______, COMMENT,          _______, _______, _______, _______, _______, _BSP,             _______,
        _______, _______, _______, _______, CUT,     DUPL,    _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,                   _______, _______,          _DEL,    OSL_EDI, _______,          _______, _______,          _______, _______, _______),
+       OSL_EDI,                   _______, _______,          _______, OSL_EDI, _______,          _______, _______,          _______, _______, _______),
+
+      LAYOUT_all //%% sticky:sel3
+      (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, _______, _______, _______, _______,          _______, SELLINE, MRKLINE, _______, _______, _______,          _______,
+       _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
+
+      LAYOUT_all //%% sticky:sel4
+      (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______, ABORTSEL,NNCOLON, NNDOT,   _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,          _______,_______,  _______, _______, _______,          _______, _______, _______, _______, NNCOMMA, _______,          _______,
+       _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,                   _______, _______,          NNSPACE, _______, NNENTER,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% oneshot:sym
       (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    _RBR,    _______, _______, _______,
-       _______,          _______, OPNTR,   FSEARCH, _BSL,    S(_BSL),          S(_6),   S(_7),   DQUOTES, S(_EQL), S(_QUO), _BSL,    _______, _______,
-       _______,          OPNHOME, _______, SPRNT,   LSWITCH, S(_1),            BRACKS,  PARENS,  QUOTES,  S(_SCL),S(_4),    S(_3),            _______,
+       _______,          _______, FSEARCH, _ESC,    _BSL,    DDD,              S(_6),   S(_EQL), S(_SCL), _QUO,    S(_QUO), S(_7),   _______, _______,
+       _______,          FPRNT,   _______, SPRNT,   LSWITCH, S(_1),            S(_QUO), CAPS,    DQUOTES, QUOTES,  S(_4),   S(_3),            _______,
        _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDPRV, FINDNXT, S(_8),   QUE,     _______, _______, _______,
-       _______,                   _______, _______,          _______,  NEXT,    CAPS,            _______, _______,          _______, _______, _______),
+       _______,                   _______, _______,          _______,  NEXT,   BRACES,           _______, _______,          _______, _______, _______),
 
 
       LAYOUT_all //%% oneshot:sym_ru
       (_______,          _______, _______, _______, _______, _______, _______, _______, _______, S(_GRV), _GRV,    _______, _______, _______, _______,
        _______,          _______, _______,G(_ENT),  _______, _______,          _______, S(_6),   S(_2),   _______, S(_DOT), _SLS,    _______, _______,
-       _______,          _______, _______, _______, LSWITCH, _______,          S(_1),   S(_6),   S(_8),   S(_EQL), S(_4),   S(_3),            _______,
+       _______,          _______, _______, _______, LSWITCH, _______,          S(_1),   _______, S(_8),   S(_EQL), S(_4),   S(_3),            _______,
        _______, _______, _______, _______, _______, _______, _______,          LCTL(_R),CTA(_S), LCTL(_W),_______, RUQUE,   _______, _______, _______,
        
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
@@ -789,13 +762,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% oneshot:bra
-      (_______,          _______, CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, BSEARCH, FSEARCH, _COM,    PYBLOCK, _______, _______, _______,
-       _______,          S(_0),   S(_9),   BEGS,    S(_COM), S(_DOT),          OPN1,    OPNTR,   OPN,     RECENTF, OPNHOME, DIRED,   _______, _______,
-       C_ENT,            _RBR,    _LBR,    S(_ENT), CCS,     S(_ENT),          MCOLON,  MX,      OPNHOME, S(_EQL), S(_4),   S(_3),            _______,
+      (_______,          S(_1),   CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, FINDAT,  QUOTES,  _COM,    PYBLOCK, _______, _______, _______,
+       _______,          S(_9),   S(_0),   ABRACKS, S(_COM), S(_DOT),          OPN1,    OPNTR,   OPN,     RECENTF, OPNHOME, DIRED,   _______, _______,
+       C_ENT,            _LBR,    _RBR,    S(_ENT), CCS,     BEGS,             PALETTE, MX,      OPNHOME, S(_EQL), S(_4),   S(_3),            _______,
        _______, _______, _______, _______, _______, C(_ENT), HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
-       _______,                   _______, _______,          COM_SPC, C(_ENT), EXECELL,          _______, _______,          _______, _______, _______),
+       _______,                   _______, _______,          COM_SPC, C(_ENT), EVAL,             _______, _______,          _______, _______, _______),
 
-      LAYOUT_all //%% oneshot:bra_ru
+      LAYOUT_all //%% oneshot:bra_ru 
       (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, S(_SLS), _______, _______, _______, _______,
        _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
        _______,          _______, S(_GRV),BRACKS_RU,_______, _GRV,             _______, _______, _______, _______, _______, _______,          _______,
@@ -804,15 +777,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
       LAYOUT_all //%% oneshot:ide
       (_______,          _______, _______, G(_B),   _SCL,    _______, _______, _______, KILLTAB, KILLAPP, G(S(_E)),CX_3,    HYPR(_LBR),_______,HYPR(_RBR),
-       _______,          _______, _______, _______, _______, S(_F6),           _SCL,    SPLITRT, OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
-       _______,          _______, _______, _______, _DEBUG,  A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
-       _______, _______, _______, _______, _______, _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
+       _______,          _______, E_CZ,    _______, _______, S(_F6),           _SCL,    SPLITRT, OTHER,   DELOTHER,OTHER,   HYPR(_G),_______, CX_LBRC,
+       _______,          _______, E_CV,    E_CC,    _DEBUG,  A(S(_1)),         A(S(_SCL)),C(S(_6)),S(_F10), C(_ENT),G(_S),  S(A(_F10)),       G(_F2),
+       _______, _______, _______, _______, E_CX,    _______, _______,          G(_L),C(A(S(_5))),CXCJ_CD,CXCJ_CC,  CXCJ_SD, CX_CC,   _______, _______,
        _______,                   _______, _______,          SCLSPC,  SCLSPC,  CCS,              _______, _______,          _______, RGB_HUI, RGB_HUD),
 
       LAYOUT_all //%% oneshot:ref
-      (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          _______, PASTEI,  _F5,     _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,          G(_U),   PASTE,   _F2,     _F12,    S(_F12),          _C,      _______, _______, _______, _______, EQL_EQL,          _______,
-       _______, _______, _______, _______, _______, C(_MIN), _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-       _______,                   _______, _______,          EQL_SPC, _EQL,    _______,          _______, _______,          _______, _______, _______),
-   };
+      (_______,          _______, _______, POPMARK, FSCR,    _______, _______, _______, _______, _______, _SCL,    _______, _______, _______, _______,
+       FSEL,             _______, UNDO,    EVAL,    _______, _______,          _______, SPLITRT, OTHER,   DELOTHER,_______, _______, _______, _______,
+       _______,          EVALA,   EVALF,   CELLUP,  CELLDN,  _______,          _______, FSEARCH, FINDAT,  _______, _______, _______,          _______,
+       _______, _______, _______, _F5,     _F2,     _F12,    S(_F12),          _______, _______, _______, _______, _______, _______, _______, _______,
+       _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),};
