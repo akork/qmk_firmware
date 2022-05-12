@@ -25,6 +25,7 @@
 #define OTHER C(A(_F19))
 #define DELOTHER C(A(S(_F19)))
 
+#define HELPKEY C(A(S(_F1)))
 #define HELPKEY C(S(A(_H)))
 #define MX C(S(_P))
 #define MCOLON A(S(_SCL))

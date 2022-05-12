@@ -704,10 +704,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
 
       LAYOUT_all //%% oneshot:edi
-      (BOSW,             BOSW,    EOSW,    UNDO,    _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   _PGUP,   SWAPUP,  _DEL,    _______, RESET,
+      (BOSW,             BOSW,    EOSW,    UNDO,    _______, _BOF,    _EOF,    G(_LBR),  SWAPDN, _PGDN,   HARDBOL, SWAPUP,  _DEL,    HELPKEY, RESET,
        ALL,              CUT,     PASTE,   DELBOW,  DELEOW,  G(_O),            _______,  BOSW,   BOW,     FBOW,    EOW,     C(_R),   _______, C(_F4),
        G(S(_D)),         CUT,     PASTE,   COPY,    EOL,     COMMENT,          _LT,     _DN,     _UP,     _RT,     DELEOL,  _______,          _______,
-       G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          BOL,     HARDBOL, DELEOL,  _DEL,    G(_DN),  _______, _______, _______,
+       G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          _DEL,    _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
        _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
       LAYOUT_all //%% sticky:sel
