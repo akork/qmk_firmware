@@ -25,21 +25,24 @@
 #define OTHER C(A(_F19))
 #define DELOTHER C(A(S(_F19)))
 
-#define HELPKEY C(A(S(_F1)))
 #define HELPKEY C(S(A(_H)))
 #define MX C(S(_P))
 #define MCOLON A(S(_SCL))
 #define PALETTE C(_L)
-#define RECENTF C(_P)
-#define OPN A(_D)
-#define OPN1 C(A(_O))
-#define OPNHOME C(A(S(_O)))
-#define OPNTR _F6
-#define DIRED C(A(S(_E)))
-#define UPD _F5
-#define SAVE C(_S)
+
+#define ORECENT C(_P)
+#define OCWD A(_D)
+#define ORC C(A(_O))
+#define OHOME C(A(S(_O)))
+#define OCLIP C(_O)
+#define OTREE _F6
+#define ODIRED C(A(S(_E)))
+
 #define PATH A(S(_C))
 #define CWD C(A(S(_C)))
+
+#define UPD _F5
+#define SAVE C(_S)
 #define NENTRY A(_N)
 #define PENTRY A(_P)
 
@@ -63,12 +66,12 @@
 #define EOW A(_RT)
 #define EOSW A(_RT)
 #define BOSW A(_LT)
-#define EOL KC_END
+#define _EOL KC_END
 #define XEOL SS_TAP(X_END)
 #define XBOL SS_TAP(X_HOME)
 #define XBOW SS_DOWN(X_LCTL) SS_TAP(X_LEFT) SS_UP(X_LCTL)
 #define XEOW SS_DOWN(X_LCTL) SS_TAP(X_RIGHT) SS_UP(X_LCTL)
-#define BOL A(_M)
+#define _BOL A(_M)
 #define HARDBOL KC_HOME
 #define _EOF C(KC_END)
 #define _BOF C(KC_HOME)
@@ -105,4 +108,3 @@
 #define RABRC S(_DOT)
 #define QUE S(_SLS)
 #define RUQUE S(_7)
-
