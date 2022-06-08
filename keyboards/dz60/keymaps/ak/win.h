@@ -5,8 +5,11 @@
 #define MTTASK2 KC_LWIN
 #define MTTASK3 C(A(S(_SPC)))
 #define TERM C(G(_1))
+#define XTERM SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "1" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define EMACS C(G(_3))
+#define XEMACS SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "3" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define BROWSER C(G(_2))
+#define XBROWSER SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "2" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define KILLAPP A(_F4)
 #define APKILL C(_W)
 #define FSCR G(_UP)
@@ -53,19 +56,24 @@
 #define E_CZ C(A(S(_F18)))
 
 // motion
+#define CELLDN C(_F8)
+#define CELLUP C(_F9)
+#define RECENTER C(_F10)
 #define POPMARK _F17
 #define UNPOPMARK C(_F17) //:TD
 #define FSEARCH C(_F)
 #define BSEARCH C(S(_F))
-#define FINDNXT _F3
-#define FINDPRV S(_F3)
+#define ALTSRCH _F3
+#define FINDNXT C(_G)
+#define FINDPRV C(S(_G))
 #define FINDAT C(S(_G))
+#define REPLACE C(S(_F))
 
-#define BOW C(_LT)
-#define FBOW C(_RT)
-#define EOW A(_RT)
-#define EOSW A(_RT)
-#define BOSW A(_LT)
+#define BOW_L C(_LT)
+#define BOW_R C(_RT)
+#define EOSW_R A(_RT)
+#define EOSW_L A(_LT)
+#define EOW_R C(A(S(_RT)))
 #define _EOL KC_END
 #define XEOL SS_TAP(X_END)
 #define XBOL SS_TAP(X_HOME)
@@ -91,14 +99,20 @@
 #define DELEOL C(S(_DEL))
 #define DELBOW C(_BSP)
 #define DELEOW C(_DEL)
+#define DELEOSW C(A(S(_DEL)))
 #define SWAPUP A(_UP)
 #define SWAPDN A(_DN)
 #define NLBELOW C(A(_4))
+#define INDENT _TAB
+#define UNINDENT S(_TAB)
+#define SFTRT C(_RBR)
+#define SFTLT C(_LBR)
 
 // programming
 #define EVAL C(_ENT)
 #define EVALF S(_ENT) // forward
 #define EVALA _F12 // above
+#define EVALCUR C(A(_F11))
 #define _DEBUG _F5
 #define CLDEBUG S(_F5)
 #define REDEBUG C(S(_F5))
