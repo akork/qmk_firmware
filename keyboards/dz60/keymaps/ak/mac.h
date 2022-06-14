@@ -13,9 +13,10 @@
 #define XBROWSER SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "2" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define KILLAPP A(_F4)
 #define APKILL C(_W)
-#define FSCR G(_UP)
-#define LSCR G(_LT)
-#define RSCR G(_RT)
+#define FSCR C(_F18)
+#define LSCR C(A(_F18))
+#define RSCR C(A(S(_F18)))
+
 
 // tabs
 #define LTAB C(S(_TAB))
