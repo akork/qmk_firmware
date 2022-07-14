@@ -35,11 +35,12 @@
 
 #define ORECENT C(_P)
 #define OCWD A(_D)
-#define ORC C(A(_O))
+#define OALT C(A(_O))
 #define OHOME C(A(S(_O)))
 #define OCLIP C(_O)
 #define OTREE _F6
 #define ODIRED C(A(S(_E)))
+#define ORC C(_COM)
 
 #define PATH A(S(_C))
 #define CWD C(A(S(_C)))

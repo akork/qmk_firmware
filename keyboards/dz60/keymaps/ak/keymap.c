@@ -812,8 +812,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         (_______,          S(_1),   CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, FINDAT,  QUOTES,  _COM,    OCLIP,   _______, _______, _______,
          _______,          S(_9),   S(_0),   ABRACKS, S(_COM), S(_DOT),          ORC,     OTREE,   OCWD,    ORECENT, OHOME,   ODIRED,  _______, _______,
          C_ENT,            _LBR,    _RBR,    E_CC,    CCS,     BEGS,             PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
-         _______, _______, _______, E_CV,    E_CX,    OCLIP,   HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
-         _______,                   _______, _______,          COM_SPC, C(_ENT), COM_ENT,          _______, _______,          _______, _______, _______),
+         _______, _______, _______, E_CV,    E_CX,    ORC,     HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
+         _______,                   _______, _______,          COM_SPC, ORC,     COM_ENT,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:bra_ru
         (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, S(_SLS), _______, _______, _______, _______,
