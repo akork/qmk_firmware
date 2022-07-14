@@ -37,11 +37,12 @@
 
 #define ORECENT C(_P)
 #define OCWD A(_D)
-#define ORC C(A(_O))
+#define OALT C(A(_O))
 #define OHOME C(A(S(_O)))
 #define OCLIP C(_O)
 #define OTREE _F6
 #define ODIRED C(A(S(_E)))
+#define ORC C(_COM)
 
 #define PATH A(S(_C))
 #define CWD C(A(S(_C)))
@@ -87,16 +88,19 @@
 #define _BOF C(KC_HOME)
 
 // editing
+// mac begin
 #define DELETE S(KC_DELETE)
-#define CUT C(_X)
-#define COPY C(KC_INSERT)
-#define PASTE S(KC_INSERT)
-#define PASTEI C(S(_V))
-#define ALL C(_A)
-#define UNDO C(_Z)
-#define REDO C(S(_Z))
-#define DUPL C(S(_D))
-#define COMMENT C(_SLS)
+#define CUT G(_X)
+#define COPY G(_C)
+#define PASTE G(_V)
+#define PASTEI G(S(_V))
+#define ALL G(_A)
+#define UNDO G(_Z)
+#define REDO G(S(_Z))
+#define DUPL G(S(_D))
+#define COMMENT G(_SLS)
+// mac end
+
 #define DELBOL C(S(_BSP))
 #define DELEOL C(S(_DEL))
 #define DELBOW C(_BSP)
