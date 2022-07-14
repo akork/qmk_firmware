@@ -3,7 +3,7 @@
 #include QMK_KEYBOARD_H
 
 #include "keydef.h"
-#include "mac.h"
+#include "win.h"
 
 #define MODS_CTRL_MASK  (MOD_BIT(KC_LSHIFT)|MOD_BIT(KC_RSHIFT))
 
@@ -709,8 +709,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% plain:ru
         (_______,          _______, _SCL,    _______, _______, _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
-         _W,               _______, _______, _J,      _______, _______,          _Q,      _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
-         _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _______,          _______,
+         _W,               _______, _______, _J,      _Q,      _______,          _______, _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
+         _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _Q,               _______,
          _DOT, _______,    _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
@@ -786,7 +786,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,          NNSPACE, _______, NNENTER,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:sym
-        (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    _RBR,    _______, _______, _______,
+        (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    C(_COM), _______, _______, _______,
          _______,          _______, FSEARCH, EEOL,    _BSL,    DDD,              S(_6),   S(_EQL), S(_SCL), _QUO,    S(_QUO), S(_7),   _______, _______,
          _______,          FPRNT,   _______, NLA,     LSWITCH, S(_1),            S(_QUO), CAPS,    DQUOTES, _SCL,    S(_4),   S(_3),            _______,
          _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDNXT, FINDPRV, S(_8),   QUE,     _______, _______, _______,
@@ -811,8 +811,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:bra
         (_______,          S(_1),   CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, FINDAT,  QUOTES,  _COM,    OCLIP,   _______, _______, _______,
          _______,          S(_9),   S(_0),   ABRACKS, S(_COM), S(_DOT),          ORC,     OTREE,   OCWD,    ORECENT, OHOME,   ODIRED,  _______, _______,
-         C_ENT,            _LBR,    _RBR,    S(_ENT), CCS,     BEGS,             PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
-         _______, _______, _______, _______, _______, OCLIP,   HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), _______, _______, _______,
+         C_ENT,            _LBR,    _RBR,    E_CC,    CCS,     BEGS,             PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
+         _______, _______, _______, E_CV,    E_CX,    OCLIP,   HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
          _______,                   _______, _______,          COM_SPC, C(_ENT), COM_ENT,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:bra_ru
