@@ -9,11 +9,13 @@
 
 enum custom_keycodes {
     TEST = SAFE_RANGE,
+    METASWITCH,
     OSL_NUM,
     OSL_EDI,
     OSL_SYM,
     OSL_BRA,
     OSL_REF,
+    NL,
     LBRACES,
     SCOLON,
     OFFMETA,
@@ -144,6 +146,7 @@ enum {
     BRACES_LR,      // 2 0
     BRACES2_LR,      // 2 0
     EDI_LR,         // 5 1
+    EDI2_LR,        // 5 0
     MACOS_LR,       // 2 0
     APPSWITCH_LR,   // 3 0
     NUM_LR,         // 4 1
@@ -159,7 +162,7 @@ enum {
     REF_LR,         //14 1
 };
 
-static const uint32_t osl_mask = 0b111111000010010000;
+static const uint32_t osl_mask = 0b1111110000100010000;
 static const uint16_t timer_threshold = 250;
 static const uint16_t oneshot_threshold = 1000;
 
@@ -331,6 +334,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // :layer_triggers
     switch(keycode) {
     case PHONY:
+        return 0;
+    case METASWITCH:
+        if (record->event.pressed) {
+            /* register_code(KC_LALT); */
+            /* register_code(KC_TAB); */
+            /* unregister_code(KC_TAB); */
+            /* unregister_code(KC_LALT); */
+            send_string_with_delay(SS_DOWN(X_LALT) SS_TAP(X_TAB) SS_UP(X_LALT), 50);
+            return 0;
+        }
         return 0;
     case EENTER:
         if (record->event.pressed) {
@@ -509,6 +522,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         clear_weak_mods();
         send_keyboard_report();
         switch(keycode) {
+            /* case TEXVIEW:         */
+            /* return 0 { */
+            /* }; */
         case APPKILL: // for appswitcher (doesn't lift alt)
             send_string(SS_LCTL("w"));
             /* register_code(KC_LALT); */
@@ -517,28 +533,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* unregister_code(_W); */
             /* unregister_code(KC_LCTL); */
             return 0;
-	case SEMACS:
-	  unregister_code(KC_LALT);
-	  send_string(XEMACS);
-	  return 0;
-	case STERM:
-	  unregister_code(KC_LALT);
-	  send_string(XTERM);
-	  return 0;
-	case SBROWSER:
-	  unregister_code(KC_LALT);
-	  send_string(XBROWSER);
-	  return 0;
+        case SEMACS:
+            unregister_code(KC_LALT);
+            send_string(XEMACS);
+            return 0;
+        case STERM:
+            unregister_code(KC_LALT);
+            send_string(XTERM);
+            return 0;
+        case SBROWSER:
+            unregister_code(KC_LALT);
+            send_string(XBROWSER);
+            return 0;
         case SCOLON:
             send_string(";" SS_TAP(X_LEFT));
+            return 0;
+        case NL:
+            send_string(XEOL SS_TAP(X_ENTER));
             return 0;
         case NLA:
             send_string(XBOL SS_TAP(X_ENTER) SS_TAP(X_UP));
             return 0;
-        /* case CELLDN: */
+            /* case CELLDN: */
             /* send_string(SS_TAP(X_ESC) SS_TAP(X_DOWN) "e"); */
             /* return 0; */
-        /* case CELLUP: */
+            /* case CELLUP: */
             /* send_string(SS_TAP(X_ESC) SS_TAP(X_UP) "e"); */
             /* return 0; */
         case SWITCHPY:
@@ -591,7 +610,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_LEFT) SS_TAP(X_UP) SS_UP(X_LSHIFT));
             return 0;
         case SELDN:
-	  send_string(SS_UP(X_LSHIFT) XBOL SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) XEOL
+            send_string(SS_UP(X_LSHIFT) XBOL SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) XEOL
                         SS_TAP(X_DOWN) XBOL SS_TAP(X_DOWN) SS_TAP(X_DOWN) SS_UP(X_LSHIFT));
             layer_or(3UL << SEL_LR);
             return 0;
@@ -702,10 +721,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% plain:en
         (S(_BSL),          S(_BSL), QUOTES,  S(_MIN), _TAB,    S(_5),   _______, S(_2),   _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,     S(_F10),
-         BRACKS,           BSEL,    OSL_SYM, _O,      _EQL,    _MIN,             _BSP,    _G,      _C,      _R,      _F,      _K,      BRACES,  _F3,
+         BRACKS,           BSEL,    OSL_SYM, _O,      _EQL,    _MIN,             _BSP,    _G,      _C,      _R,      _F,      _K,      BRACES, _F3,
          OSM(MOD_LSFT),    _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      PARENS,  G(A(_ENT)),
-         _LSFT,    _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),_UP,
-         OSL_EDI,                   _LGUI,   RALT,             _SPC,    OSL_NUM, OSMETA,           RCMD,    _LCTL,            OSL_REF, OSL_REF, RESET),
+         _LSFT,    _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),KC_VOLU,
+         OSL_EDI,                   _LGUI,   RALT,             _SPC,    OSL_NUM, OSMETA,           RCMD,    METASWITCH,       OSL_REF, OSL_REF, KC_VOLD),
 
         LAYOUT_all //%% plain:ru
         (_______,          _______, _SCL,    _______, _______, _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
@@ -731,14 +750,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:edi
         (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOW_R,   _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, RESET,
          ALL,              CUT,     PASTE,   DELBOW,  DELEOW,  DELEOSW,          _______, EOSW_L,  BOW_R,   BOW_L,   EOSW_R,  _BOL,    _______, C(_F4),
-         G(S(_D)),         CUT,     PASTE,   COPY,    _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
+         G(S(_D)),         COPY,    PASTE,   NL,      _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
          G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          _DEL,    _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
+        LAYOUT_all //%% mod:braces2
+        (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______,          _______,
+         _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+         _______,                   _______, _______,          _______, _______, EEENTER,          _______, _______,          _______, _______, _______),
+
         LAYOUT_all //%% mod:os
         (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    _______, _______, _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
-         WIN,              REDO,    _______, BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, LTAB,    RTAB,    FINDPRV, G(_RBR), _______, _______,
-         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),CMDTAB,  SCMDTAB,  SAVE,    CWD,     _______,          _______,
+         WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, RTAB,    LTAB,    FINDPRV, G(_RBR), _______, _______,
+         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),CMDTAB,  SCMDTAB,
+         SAVE,    CWD,     _______,          _______,
          _______, _______, SFTLT,   SFTRT,   SFTRT,   MTTASK,  _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
          _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 
@@ -759,10 +786,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% sticky:sel
         (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, _______, S(EOW_R),SWAPDN,  S(HARDBOL), SWAPUP,_______, _______, _______,
-	 _______,          _______, _______, _______, _______, _______,          _______, S(EOSW_L),S(BOW_R),S(BOW_L),S(EOSW_R),  _______, _______, _______,
-	 _______,          _______, _______, _______, S(_EOL), _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  _______, _______,          _______,
-	 _______, _______, SFTLT,   SFTRT,   _______, _______, _______,          S(_BOL), S(_PGDN),S(_PGUP),_______, _______, _______, _______, _______,
-	 _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
+         _______,          _______, _______, _______, _______, _______,          _______, S(EOSW_L),S(BOW_R),S(BOW_L),S(EOSW_R),  _______, _______, _______,
+         _______,          _______, _______, _______, S(_EOL), _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  _______, _______,          _______,
+         _______, _______, SFTLT,   SFTRT,   _______, _______, _______,          S(_BOL), S(_PGDN),S(_PGUP),_______, _______, _______, _______, _______,
+         _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% sticky:sel2
         (_______,          _______, _______, SBRACKS, _DEL,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -788,8 +815,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:sym
         (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    C(_COM), _______, _______, _______,
          _______,          _______, FSEARCH, EEOL,    _BSL,    DDD,              S(_6),   S(_EQL), S(_SCL), _QUO,    S(_QUO), S(_7),   _______, _______,
-         _______,          FPRNT,   _______, NLA,     LSWITCH, S(_1),            S(_QUO), CAPS,    DQUOTES, _SCL,    S(_4),   S(_3),            _______,
-         _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDNXT, FINDPRV, S(_8),   QUE,     _______, _______, _______,
+         _______,          FPRNT,   _______, NLA,     CAPS,    S(_1),            S(_8),   LSWITCH, DQUOTES, _BSL,    S(_4),   S(_3),            _______,
+         _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDNXT, FINDPRV, _SCL,    QUE,     _______, _______, _______,
          _______,                   _______, _______,          _______,  NEXT,   BRACES,           _______, _______,          _______, _______, _______),
 
 
@@ -823,8 +850,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,        COM_SPC_RU,_______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:ref
-        (_______,          _______, _______, POPMARK, FSCR,    _______, _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______,
-         FSEL,             _______, EVALF,   EVALF,   _______, _______,          _______, SPLITRT, OTHER,   DELOTHER,ALTSRCH, _______, _______, _______,
-         _______,          EVALCUR, EVAL,    CELLUP,  CELLDN,  RECENTER,         _______, FSEARCH, FINDAT,  REPLACE, _______, _______,          _______,
-         _______, _______, _______, _F5,     _F2,     _F12,    S(_F12),          _______, _______, _______, _______, _______, _______, _______, _______,
+        (_______,          _______, _______, POPMARK, FSCR1,   _F11,    _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______,
+         FSEL,             _______, EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   PREVW,   DELOTHER,DELCUR,  _______, _______,
+         DELCELL,          DELCELL, EVAL,    CELLUP,  CELLDN,  RECENTER,         _______, FSEARCH, FINDAT,  REPLACE, _______, _______,          _______,
+         NEWABOVE,_______, NEWBELOW,_F5,     _F2,     _F12,    S(_F12),          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),};

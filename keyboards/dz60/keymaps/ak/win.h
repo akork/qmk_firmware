@@ -6,13 +6,15 @@
 #define MTTASK3 C(A(S(_SPC)))
 #define TERM C(G(_1))
 #define XTERM SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "1" SS_UP(X_LGUI) SS_UP(X_LCTL)
-#define EMACS C(G(_3))
+#define EMACS C(G(_2))
 #define XEMACS SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "3" SS_UP(X_LGUI) SS_UP(X_LCTL)
-#define BROWSER C(G(_2))
+#define BROWSER C(G(_3))
+#define BROWSER2 C(G(_4))
 #define XBROWSER SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "2" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define KILLAPP A(_F4)
 #define APKILL C(_W)
 #define FSCR G(_UP)
+#define FSCR1 A(S(_F12))
 #define LSCR G(_LT)
 #define RSCR G(_RT)
 
@@ -24,9 +26,11 @@
 #define MAGIC _F19
 
 // layout
-#define SPLITRT C(_F19)
-#define OTHER C(A(_F19))
-#define DELOTHER C(A(S(_F19)))
+#define SPLITRT A(_F12)
+#define NEXTW C(A(_F12))
+#define PREVW C(A(S(_F12)))
+#define DELOTHER C(_F12)
+#define DELCUR C(S(_F12))
 
 #define HELPKEY C(S(A(_H)))
 #define MX C(S(_P))
@@ -117,6 +121,9 @@
 #define _DEBUG _F5
 #define CLDEBUG S(_F5)
 #define REDEBUG C(S(_F5))
+#define NEWBELOW C(S(A(_B)))
+#define NEWABOVE C(S(A(_A)))
+#define DELCELL C(S(A(_D)))
 
 // some keys
 #define LABRC S(_COM)
