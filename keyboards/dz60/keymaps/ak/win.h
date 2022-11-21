@@ -29,7 +29,7 @@
 #define SPLITRT A(_F12)
 #define NEXTW C(A(_F12))
 #define PREVW C(A(S(_F12)))
-#define DELOTHER C(_F12)
+#define ZOOM C(_F12)
 #define DELCUR C(S(_F12))
 
 #define HELPKEY C(S(A(_H)))
