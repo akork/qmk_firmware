@@ -1,4 +1,4 @@
-// -*- compile-command: "cd ../../../../ && make dz60:ak-first:dfu" -*-
+// -*- qmk: t -*-
 
 #include QMK_KEYBOARD_H
 
@@ -77,7 +77,7 @@ enum custom_keycodes {
     LSWITCH,
     CMDTAB,
     WINTAB,
-    CMDTABRUN,
+    APPSW,
     SCMDTAB,
     ALTQUO,
     LBR_RBR_LFT,
@@ -428,7 +428,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 register_code(KC_ENTER);
                 unregister_code(KC_ENTER);
                 unregister_code(KC_LGUI);
+                unregister_code(KC_RGUI);
                 unregister_code(KC_LALT);
+                unregister_code(KC_RALT);
+                unregister_code(KC_LSHIFT);
+                unregister_code(KC_RSHIFT);
 
 
                 /* layer_on(ENTER_LR); */
@@ -436,7 +440,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 if ((1UL << MACOS_LR) & layer_state) {
                     unregister_code(KC_LGUI);
+                    unregister_code(KC_RGUI);
                     unregister_code(KC_LALT);
+                    unregister_code(KC_RALT);
+                    unregister_code(KC_LSHIFT);
+                    unregister_code(KC_RSHIFT);
                     if (meta_up_signal) {
                         register_code(MAGIC);
                         unregister_code(MAGIC);
@@ -457,7 +465,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (1UL << MACOS_LR & layer_state) {
         if (record->event.pressed) {
             switch(keycode) {
-            case CMDTABRUN:
+            case APPSW:
                 if (record->event.pressed) {
                     if (get_mods() & MOD_BIT(KC_LSHIFT))
                         del_mods(MOD_BIT(KC_LSHIFT));
@@ -484,7 +492,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             case WINTAB:
                 if (record->event.pressed) {
-                    layer_and(~(1UL << MACOS_LR));
+                    if ((1UL << APPSWITCH_LR) && layer_state) send_string(SS_TAP(X_HOME));
+                    unregister_code(KC_LALT);
+                    layer_and(~(3UL << MACOS_LR));
                     send_string(SS_DOWN(X_RGUI) "/" SS_UP(X_RGUI));
                     send_string_with_delay(SS_UP(X_RGUI), 50);
                     meta_up_signal = 0;
@@ -533,7 +543,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* return 0 { */
             /* }; */
         case APPKILL: // for appswitcher (doesn't lift alt)
-            send_string(SS_LCTL("w"));
+            send_string(SS_DOWN(X_LALT) SS_TAP(X_F4) SS_UP(X_LALT));
             /* register_code(KC_LALT); */
             /* register_code(KC_LCTL); */
             /* register_code(_W); */
@@ -756,11 +766,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,          _______, _______, EENTER,           _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% mod:braces2
-        (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        (_______,          _______, _______, _______, EEENTER, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, DDDEREF,          _______,
          _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,                   _______, _______,          _______, _______, EEENTER,          _______, _______,          _______, _______, _______),
+         _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:edi
         (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOSW_R,  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, RESET,
@@ -778,8 +788,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% mod:os
         (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    C(_R),   _______, _______, KILLTAB, KILLAPP, _______, _______, _______, _______, _______,
-         WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, RTAB,    LTAB,    FINDPRV, _______, _______, _______,
-         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),CMDTABRUN,KILLTAB,SAVE,    WINTAB,  _______,          _______,
+         WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    A(_GRV), RTAB,    LTAB,    FINDPRV, _______, _______, _______,
+         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),APPSW,   KILLTAB,SAVE,    WINTAB,  _______,          _______,
          _______, _______, G(_7),   G(_6),   G(_5),   MTTASK,  _______,          _______, UPD,     KILLAPP, _______, CWD,     _______, _______, RGB_TOG,
          _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 
