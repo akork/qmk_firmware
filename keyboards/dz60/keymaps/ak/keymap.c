@@ -241,6 +241,7 @@ void matrix_scan_user(void) {
     if (sel2_off) {
         layer_off(SEL3_LR);
         layer_off(SEL4_LR);
+	unregister_code(KC_LSHIFT);
         sel2_off = 0;
     }
     if (braces_lr_off) {
@@ -399,6 +400,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             layer_or(15UL << SEL_LR);
             send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) SS_UP(X_LSHIFT));
+	    register_code(KC_LSHIFT);
         }
         return 0;
     case FSEL:
@@ -810,7 +812,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% sticky:sel
         (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, _______, S(EOW_R),SWAPDN,  S(HARDBOL), SWAPUP,_______, _______, _______,
-         _______,          _______, _______, _______, _______, _______,          _______, S(EOSW_L),S(BOW_R),S(BOW_L),S(EOSW_R),  _______, _______, _______,
+         _______,          _______, _______, _______, _______, _______,          _______, S(EOSW_L),S(BOW_R),S(BOW_L),S(EOSW_R),_______, _______, _______,
          _______,          _______, _______, _______, S(_EOL), _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  _______, _______,          _______,
          _______, _______, SFTLT,   SFTRT,   _______, _______, _______,          S(_BOL), S(_PGDN),S(_PGUP),_______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
