@@ -25,6 +25,7 @@ enum custom_keycodes {
     SQUO,
     SPARENS,
     SBRACKS,
+    SBRACES,
     BSEL,
     FSEL,
     ABORTSEL,
@@ -39,7 +40,6 @@ enum custom_keycodes {
     SELLINE,
     MRKLINE,
     NCOLON,
-    C_ENT,
     COUT,
     CIN,
     NAMESPACE,
@@ -76,10 +76,11 @@ enum custom_keycodes {
     CX_CC,
     LSWITCH,
     CMDTAB,
+    WINTAB,
+    CMDTABRUN,
     SCMDTAB,
     ALTQUO,
     LBR_RBR_LFT,
-    GQ,
     CX_CX,
     CX_G,
     CX_Z,
@@ -106,6 +107,8 @@ enum custom_keycodes {
     COM_SPC_RU,
     COM_ENT,
     EENTER,
+    XDOT,
+    DDDEREF,
     EEENTER,
     PARENS,
     PARENS_ENDL,
@@ -117,6 +120,7 @@ enum custom_keycodes {
     QUOTES,
     DQUOTES,
     CCS, // complete current statement
+    DEREF, // ->
     BEGS,
     NLA,
     EEOL,
@@ -136,6 +140,7 @@ enum custom_keycodes {
     SEMACS,
     STERM,
     SBROWSER,
+    SELBOL,
     SELDN,
     SELUP,
 };
@@ -174,6 +179,7 @@ static uint8_t rgblight_mode_current = RGBLIGHT_MODE_KNIGHT + 1;
 
 static uint16_t oneshot_timer;
 static uint8_t oneshot_down = 0, oneshot_fired = 0;
+static uint8_t modtap_fired = 1;
 static uint8_t caps = 0,
     sel_off = 0,
     sel2_off = 0,
@@ -273,7 +279,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             keycode == OSMETA ||
             keycode == BSEL ||
             keycode == OSL_REF ||
-	    keycode == OSL_HELP) {
+            keycode == OSL_HELP) {
             if (1UL << RU_LR & layer_state)
                 ru_turn_off();
         }
@@ -349,6 +355,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
         }
         return 0;
+    case XDOT:
+        if (record->event.pressed) {
+            send_string(".");
+            layer_or((1UL << BRACES2_LR));
+            braces_lr_off = 0;
+        }
+        return 0;
     case EENTER:
         if (record->event.pressed) {
             send_string(SS_TAP(X_ENTER));
@@ -359,6 +372,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case EEENTER:
         if (record->event.pressed) {
             send_string(SS_TAP(X_UP) XEOL SS_TAP(X_ENTER));
+        }
+        return 0;
+    case DDDEREF:
+        if (record->event.pressed) {
+            send_string(SS_TAP(X_BSPC) "->");
         }
         return 0;
     case CAPS:
@@ -404,9 +422,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             ostimer = timer_read();
             layer_on(MACOS_LR);
+            modtap_fired = 0;
         } else {
-            layer_and(~(3UL << MACOS_LR));
-            if (timer_elapsed(ostimer) < timer_threshold) {
+            if ((timer_elapsed(ostimer) < timer_threshold) && !modtap_fired) {
                 register_code(KC_ENTER);
                 unregister_code(KC_ENTER);
                 unregister_code(KC_LGUI);
@@ -416,14 +434,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 /* layer_on(ENTER_LR); */
                 /* enter_timer = timer_read(); */
             } else {
-                unregister_code(KC_LGUI);
-                unregister_code(KC_LALT);
-                if (meta_up_signal) {
-                    register_code(MAGIC);
-                    unregister_code(MAGIC);
+                if ((1UL << MACOS_LR) & layer_state) {
+                    unregister_code(KC_LGUI);
+                    unregister_code(KC_LALT);
+                    if (meta_up_signal) {
+                        register_code(MAGIC);
+                        unregister_code(MAGIC);
+                    }
                 }
-
             }
+            layer_and(~(3UL << MACOS_LR));
             /* clear_mods(); */
         }
         return 0;
@@ -437,61 +457,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (1UL << MACOS_LR & layer_state) {
         if (record->event.pressed) {
             switch(keycode) {
-            case G(A(_C)):
-                register_code(KC_RGUI);
-                register_code(KC_LALT);
-                register_code(KC_C);
-                unregister_code(KC_C);
-                unregister_code(KC_LALT);
-                unregister_code(KC_RGUI);
-                return 0;
-            case G(A(S(_C))):
-                register_code(KC_RGUI);
-                register_code(KC_LALT);
-                register_code(KC_LSFT);
-                register_code(KC_C);
-                unregister_code(KC_C);
-                unregister_code(KC_LSFT);
-                unregister_code(KC_LALT);
-                unregister_code(KC_RGUI);
-                return 0;
+            case CMDTABRUN:
+                if (record->event.pressed) {
+                    if (get_mods() & MOD_BIT(KC_LSHIFT))
+                        del_mods(MOD_BIT(KC_LSHIFT));
+                    /* send_string(SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(X_TAB) SS_UP(X_LSFT)); */
+                    send_string(SS_DOWN(X_LALT) SS_TAP(X_TAB));
+                    layer_or(1UL << APPSWITCH_LR);
+                }
+
+                return false;
             case CMDTAB:
                 if (record->event.pressed) {
-                    if (get_mods() & MOD_BIT(KC_LSHIFT)) {
+                    if (get_mods() & MOD_BIT(KC_LSHIFT))
                         del_mods(MOD_BIT(KC_LSHIFT));
-                    }
                     /* del_mods(MOD_BIT(SWITCH)); // important! the next processing should enable alt from scratch */
-                    register_code(SWITCH);
-                    register_code(KC_TAB);
-                    unregister_code(KC_TAB);
+                    send_string(SS_DOWN(X_LALT) SS_TAP(X_TAB));
                     layer_or(1UL << APPSWITCH_LR);
                 }
 
                 return false;
             case SCMDTAB:
                 if (record->event.pressed) {
-                    register_code(SWITCH);
-                    register_code(KC_LSHIFT);
-                    register_code(KC_TAB);
-                    unregister_code(KC_TAB);
-                    unregister_code(KC_LSHIFT);
+                    send_string(SS_DOWN(X_LSFT) SS_TAP(X_TAB) SS_UP(X_LSFT));
                 }
                 return false;
-            case GQ:
-                register_code(KC_LGUI);
-                register_code(KC_Q);
-                unregister_code(KC_Q);
+            case WINTAB:
+                if (record->event.pressed) {
+                    layer_and(~(1UL << MACOS_LR));
+                    send_string(SS_DOWN(X_RGUI) "/" SS_UP(X_RGUI));
+                    send_string_with_delay(SS_UP(X_RGUI), 50);
+                    meta_up_signal = 0;
+                }
                 return false;
-                /* default: */
-                /* if (layer <= APPSWITCH_LR) { */
-                /* unregister_mods(MOD_LGUI); */
-                /* unregister_mods(MOD_LALT); // important! the next processing should enable alt from scratch */
-                /* } */
-
             } // END: CMD-TAB like keycodes
+
         }
     }
-
+    modtap_fired = 1;
     // RCMD & RALT doing smth usefull on single press:
     switch(keycode) {
     case RCMD:
@@ -501,7 +504,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
             unregister_code(KC_RCTRL);
             if (timer_elapsed(rcmd_timer) < timer_threshold)
-                send_string(SS_LCTRL("x") "k" SS_LCTRL("["));
+                send_string(SS_LCTRL("]") "k");
         }
         return false;
     case RALT:
@@ -511,7 +514,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
             unregister_code(KC_RALT);
             if (timer_elapsed(rcmd_timer) < timer_threshold)
-                send_string(SS_LCTRL("x") "f" SS_LCTRL("["));
+                send_string(SS_LCTRL("]") "f");
         }
         return false;
     }
@@ -538,16 +541,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             /* unregister_code(KC_LCTL); */
             return 0;
         case SEMACS:
-            unregister_code(KC_LALT);
-            send_string(XEMACS);
+            send_string(SS_DOWN(X_LALT) SS_TAP(X_HOME) SS_UP(X_LALT));
+            send_string_with_delay(XEMACS, 50);
             return 0;
         case STERM:
-            unregister_code(KC_LALT);
-            send_string(XTERM);
+            send_string(SS_DOWN(X_LALT) SS_TAP(X_HOME) SS_UP(X_LALT));
+            send_string_with_delay(XTERM, 50);
             return 0;
         case SBROWSER:
-            unregister_code(KC_LALT);
-            send_string(XBROWSER);
+            send_string(SS_DOWN(X_LALT) SS_TAP(X_HOME) SS_UP(X_LALT));
+            send_string_with_delay(XBROWSER, 50);
             return 0;
         case SCOLON:
             send_string(";" SS_TAP(X_LEFT));
@@ -569,6 +572,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
         case CCS:
             send_string(XEOL ";");
+            return 0;
+        case DEREF:
+            send_string("->");
             return 0;
         case BEGS:
             if (py == true) {
@@ -618,12 +624,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         SS_TAP(X_DOWN) XBOL SS_TAP(X_DOWN) SS_TAP(X_DOWN) SS_UP(X_LSHIFT));
             layer_or(3UL << SEL_LR);
             return 0;
+        case SELBOL:
+            send_string(SS_DOWN(X_LSHIFT) XBOL SS_UP(X_LSHIFT));
+            layer_or(3UL << SEL_LR);
+            return 0;
         case SELUP:
             send_string(SS_UP(X_LSHIFT) XEOL SS_DOWN(X_LSHIFT) SS_TAP(X_UP) XBOL SS_TAP(X_UP) SS_UP(X_LSHIFT));
             layer_or(3UL << SEL_LR);
-            return 0;
-        case C_ENT:
-            send_string(SS_LCTRL(SS_TAP(X_ENTER)) SS_TAP(X_ENTER));
             return 0;
         case SQUO:
             send_string(SS_LCTRL("x") "''" SS_TAP(X_LEFT) SS_LCTRL("v"));
@@ -633,6 +640,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
         case SBRACKS:
             send_string(SS_LCTRL("x") "[]" SS_TAP(X_LEFT) SS_LCTRL("v"));
+            return 0;
+        case SBRACES:
+            send_string(SS_LCTRL("x") "{}" SS_TAP(X_LEFT) SS_LCTRL("v"));
             return 0;
         case MOD_SWITCH:
             mod ^= 1;
@@ -714,6 +724,7 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
+    // https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md
     {
 
         //%% karabiner:
@@ -725,16 +736,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% plain:en
         (S(_BSL),          S(_BSL), QUOTES,  S(_MIN), _TAB,    S(_5),   _______, S(_2),   _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,     S(_F10),
-         BRACKS,           BSEL,    OSL_SYM, _O,      _EQL,    _MIN,             _BSP,    _G,      _C,      _R,      _F,      _K,      BRACES, _F3,
-         OSM(MOD_LSFT),    _DOT,    _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      PARENS,  G(A(_ENT)),
-         _LSFT,    _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),KC_VOLU,
-         OSL_EDI,                   _LGUI,   RALT,             _SPC,    OSL_NUM, OSMETA,           RCMD,    _LCTL,   METASWITCH,OSL_REF, OSL_HELP),
+         BRACKS,           PARENS,  OSL_SYM, _O,      _EQL,    _MIN,             _BSP,    _G,      _C,      _R,      _F,      _K,      BRACES, _F3,
+         OSL_NUM,  XDOT,   _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      _RT,                    G(A(_ENT)),
+         BSEL,     _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),KC_VOLU,
+         OSL_EDI,                   _LGUI,   RALT,             _SPC,OSM(MOD_LSFT),OSMETA,           RCMD,   METASWITCH,OSM(MOD_LCTL),OSL_REF, OSL_HELP),
 
         LAYOUT_all //%% plain:ru
         (_______,          _______, _SCL,    _______, _______, _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
          _W,               _______, _______, _J,      _Q,      _______,          _______, _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
          _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _Q,               _______,
-         _DOT, _______,    _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
+         _DOT,    _______, _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% mod:braces
@@ -747,15 +758,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% mod:braces2
         (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______,          _______,
+         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, DDDEREF,          _______,
          _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, EEENTER,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:edi
-        (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOW_R,   _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, RESET,
-         ALL,              CUT,     PASTE,   DELBOW,  DELEOW,  DELEOSW,          _______, EOSW_L,  BOW_R,   BOW_L,   EOSW_R,  _BOL,    _______, C(_F4),
-         G(S(_D)),         COPY,    PASTE,   NL,      _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
-         G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          _DEL,    _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
+        (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOSW_R,  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, RESET,
+         ALL,              CUT,     S(_HOME),DELBOW,  DELEOW,  DELEOSW,          _______, EOSW_L,  BOW_R,   BOW_L,   EOW_R,   _BOL,    _______, C(_F4),
+         G(S(_D)),         COPY,    PASTE,   SELBOL,  _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
+         G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          HARDBOL, _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% mod:braces2
@@ -766,16 +777,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,          _______, _______, EEENTER,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% mod:os
-        (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    _______, _______, _______, KILLTAB, KILLAPP, G(A(_W)),G(_W),   G(_Z),   _______, _______,
-         WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, RTAB,    LTAB,    FINDPRV, G(_RBR), _______, _______,
-         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),CMDTAB,  SCMDTAB, SAVE,    CWD,     _______,          _______,
-         _______, _______, SFTLT,   SFTRT,   SFTRT,   MTTASK,  _______,          _______, UPD,     _______, _______, G(A(_C)),_______, _______, RGB_TOG,
+        (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    C(_R),   _______, _______, KILLTAB, KILLAPP, _______, _______, _______, _______, _______,
+         WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    FINDNXT, RTAB,    LTAB,    FINDPRV, _______, _______, _______,
+         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),CMDTABRUN,KILLTAB,SAVE,    WINTAB,  _______,          _______,
+         _______, _______, G(_7),   G(_6),   G(_5),   MTTASK,  _______,          _______, UPD,     KILLAPP, _______, CWD,     _______, _______, RGB_TOG,
          _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 
-        LAYOUT_all //%% appswitch
+        LAYOUT_all //%% :appswitch
         (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _______, _______, SBROWSER,_______, _______,          _______, KILLAPP, ALTF4,   APPDN,   APPUP,   _______, _______, _______,
-         _______,          _______, STERM,   SEMACS,  _______, _______,          _______, _______, _______, APPDN,   APPKILL, APKILL,           _______,
+         _______,          _______, _______, SBROWSER,_______, _______,          _______, KILLAPP, _HOME,   APPDN,   APPUP,   _______, _______, _______,
+         _______,          _______, STERM,   SEMACS,  _______, _______,          _______, CMDTAB,  SCMDTAB, APPKILL, _______, APKILL,           _______,
          _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
@@ -795,7 +806,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% sticky:sel2
-        (_______,          _______, _______, SBRACKS, _DEL,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        (_______,          _______, _______, SBRACES, _DEL,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, PHONY,   SPARENS, SBRACKS, SQUO,             _BSP,    _______, _______, _______, _______, _______, _______, _______,
          _______,          COPY,    PASTE,   _______, _______, COMMENT,          _______, _______, _______, _______, _______, UNINDENT,         _______,
          _______, _______, _______, _______, CUT,     DUPL,    PHONY,            _______, _______, _______, _______, _______, _______, _______, _______,
@@ -817,8 +828,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% oneshot:sym
         (_______,          _______, _______, _______, _______, _______, _______, _LBR,    _QUO,    S(_GRV), _GRV,    C(_COM), _______, _______, _______,
-         _______,          _______, FSEARCH, EEOL,    _BSL,    DDD,              S(_6),   S(_EQL), S(_SCL), _QUO,    S(_QUO), S(_7),   _______, _______,
-         _______,          FPRNT,   _______, NLA,     CAPS,    S(_1),            S(_8),   LSWITCH, DQUOTES, _BSL,    S(_4),   S(_3),            _______,
+         _______,          _______, FSEARCH, EEOL,    _QUO,    DDD,              S(_6),   S(_EQL), S(_SCL), S(_4),   S(_QUO), S(_7),   _______, _______,
+         _______,          FPRNT,   _______, NLA,     CAPS,    S(_1),            DQUOTES, LSWITCH, S(_8),   _BSL,    QUE,     S(_3),            _______,
          _______, _______, _______, _______, _______, _______, _______,          G(S(_G)),FINDNXT, FINDPRV, _SCL,    QUE,     _______, _______, _______,
          _______,                   _______, _______,          _______,  NEXT,   BRACES,           _______, _______,          _______, _______, _______),
 
@@ -841,7 +852,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:bra
         (_______,          S(_1),   CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, FINDAT,  QUOTES,  _COM,    OCLIP,   _______, _______, _______,
          _______,          S(_9),   S(_0),   ABRACKS, S(_COM), S(_DOT),          ORC,     OTREE,   OCWD,    ORECENT, OHOME,   ODIRED,  _______, _______,
-         C_ENT,            _LBR,    _RBR,    E_CC,    CCS,     BEGS,             PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
+         _______,          _LBR,    _RBR,    E_CC,    CCS,     DEREF,            PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
          _______, _______, _______, E_CV,    E_CX,    ORC,     HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
          _______,                   _______, _______,          COM_SPC, ORC,     COM_ENT,          _______, _______,          _______, _______, _______),
 
@@ -855,13 +866,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:ref
         (_______,          _______, _______, POPMARK, FSCR1,   _F11,    _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______,
          FSEL,             _______, EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   ZOOM,    PREVW,   DELCUR,  _______, _______,
-         DELCELL,          DELCELL, EVAL,    CELLUP,  CELLDN,  RECENTER,         _______, FSEARCH, FINDAT,  REPLACE, _______, _______,          _______,
+         DELCELL,          DELCELL, EVAL,    CELLUP,  CELLDN,  RECENTER,         FINDAT,  FSEARCH, PALETTE, REPLACE, _______, _______,          _______,
          NEWABOVE,_______, NEWBELOW,_F5,     _F2,     _F12,    S(_F12),          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
-	
+
         LAYOUT_all //%% oneshot:help
         (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _A,      C(_COM), C(_MIN),C(S(_EQL)),_______,         _______, _______, _______, _______, _______, _______,          _______,
-         _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
+         _______,          _F1,     C(_COM), C(_PMNS),C(_PPLS),_______,          _______, _______, _______, _______, _______, _______,          _______,
+         _______, _______, SFTLT,   SFTRT,   _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, EEENTER,          _______, _______,          _______, _______, _______),};

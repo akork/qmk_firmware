@@ -110,6 +110,8 @@
 #define _HOME KC_HOME
 #define _END KC_END
 #define _DEL KC_DELETE
+#define _PPLS KC_KP_PLUS
+#define _PMNS KC_KP_MINUS
 #define GR(x) RGUI(x)
 /* #define S(x) RSHIFT(x) */
 

@@ -7,10 +7,10 @@
 #define TERM C(G(_1))
 #define XTERM SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "1" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define EMACS C(G(_2))
-#define XEMACS SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "3" SS_UP(X_LGUI) SS_UP(X_LCTL)
+#define XEMACS SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "2" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define BROWSER C(G(_3))
+#define XBROWSER SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "3" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define BROWSER2 C(G(_4))
-#define XBROWSER SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) "2" SS_UP(X_LGUI) SS_UP(X_LCTL)
 #define KILLAPP A(_F4)
 #define APKILL C(_W)
 #define FSCR G(_UP)
@@ -92,7 +92,8 @@
 // editing
 #define DELETE S(KC_DELETE)
 #define CUT C(_X)
-#define COPY C(KC_INSERT)
+/* #define COPY C(KC_INSERT) */
+#define COPY C(_C)
 #define PASTE S(KC_INSERT)
 #define PASTEI C(S(_V))
 #define ALL C(_A)
