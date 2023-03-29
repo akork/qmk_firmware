@@ -236,6 +236,7 @@ void matrix_scan_user(void) {
 
     if (sel_off) {
         layer_and(~(15UL << SEL_LR));
+	unregister_code(KC_LSHIFT);
         sel_off = 0;
     }
     if (sel2_off) {
@@ -288,8 +289,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // select layers magic
     if (record->event.pressed) {
-        if (((layer == SEL_LR) || (layer == SEL3_LR)) && keycode != S(_RT)) sel2_off = 1;
-        if ((layer == SEL4_LR) || (layer == SEL2_LR)) sel_off = 1;
+        if (((layer == SEL3_LR)) && keycode != S(_RT)) sel2_off = 1;
+        if ((layer == SEL4_LR) || (layer == SEL2_LR)) {
+	  sel_off = 1;
+	  unregister_code(KC_LSHIFT);
+	}
     }
 
     // for ctrl-tab in emacs
@@ -398,9 +402,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     case BSEL:
         if (record->event.pressed) {
-            layer_or(15UL << SEL_LR);
-            send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) SS_UP(X_LSHIFT));
-	    register_code(KC_LSHIFT);
+            /* layer_or(15UL << SEL_LR); */
+            layer_or(3UL << SEL_LR);
+            send_string(SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) SS_TAP(X_LEFT));
         }
         return 0;
     case FSEL:
@@ -538,8 +542,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (layer == SEL4_LR) { // some stuff for exiting selection mode in emacs for NN-commands
             send_string(SS_TAP(X_F19) SS_TAP(X_RIGHT));
         }
-        clear_weak_mods();
-        send_keyboard_report();
+        /* clear_weak_mods(); */
+        /* send_keyboard_report(); */
         switch(keycode) {
             /* case TEXVIEW:         */
             /* return 0 { */
@@ -633,7 +637,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
         case SELDN:
             send_string(SS_UP(X_LSHIFT) XBOL SS_DOWN(X_LSHIFT) SS_TAP(X_RIGHT) XEOL
-                        SS_TAP(X_DOWN) XBOL SS_TAP(X_DOWN) SS_TAP(X_DOWN) SS_UP(X_LSHIFT));
+                        SS_TAP(X_DOWN) XBOL SS_TAP(X_DOWN) SS_TAP(X_DOWN));
             layer_or(3UL << SEL_LR);
             return 0;
         case SELBOL:
@@ -641,7 +645,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_or(3UL << SEL_LR);
             return 0;
         case SELUP:
-            send_string(SS_UP(X_LSHIFT) XEOL SS_DOWN(X_LSHIFT) SS_TAP(X_UP) XBOL SS_TAP(X_UP) SS_UP(X_LSHIFT));
+            send_string(SS_UP(X_LSHIFT) XEOL SS_DOWN(X_LSHIFT) SS_TAP(X_UP) XBOL SS_TAP(X_UP));
             layer_or(3UL << SEL_LR);
             return 0;
         case SQUO:
@@ -809,12 +813,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______, _______, _______, _______, REDEBUG, CLDEBUG, _______,          _7,      _8,      _______, CC_PLS,  CC_MIN,  _______, _______, _______,
          _______,                   _______, _______,          SCLSPC, _______,  _______,          _______, _______,          _______, _______, _______),
 
-
         LAYOUT_all //%% sticky:sel
-        (_______,          _______, _______, _______, S(_BOF), S(_EOF), _______, _______, S(EOW_R),SWAPDN,  S(HARDBOL), SWAPUP,_______, _______, _______,
-         _______,          _______, _______, _______, _______, _______,          _______, S(EOSW_L),S(BOW_R),S(BOW_L),S(EOSW_R),_______, _______, _______,
-         _______,          _______, _______, _______, S(_EOL), _______,          S(_LT),  S(_DN),  S(_UP),  S(_RT),  _______, _______,          _______,
-         _______, _______, SFTLT,   SFTRT,   _______, _______, _______,          S(_BOL), S(_PGDN),S(_PGUP),_______, _______, _______, _______, _______,
+        (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOSW_R,  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, RESET,
+         ALL,              CUT,     S(_HOME),DELBOW,  DELEOW,  DELEOSW,          _______, EOSW_L,  BOW_R,   BOW_L,   EOW_R,   _BOL,    _______, C(_F4),
+         G(S(_D)),         COPY,    PASTE,   SELBOL,  _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
+         G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          HARDBOL, _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% sticky:sel2
