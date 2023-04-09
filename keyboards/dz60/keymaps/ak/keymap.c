@@ -318,30 +318,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     // CAPS CAPS CAPS CAPS CAPS
-    /* if (record->event.pressed) { */
-    /*     if (caps == 1) { // стоп слова без дальнейшей обработки */
-    /*         if (keycode == CAPS || */
-    /*             keycode == _ESC || */
-    /*             keycode == OSM(MOD_LSFT) || */
-    /*             keycode == _TAB */
-    /*             ) { */
-    /*             caps = 0; */
-    /*             unregister_code(KC_LSFT); */
-    /*             return 0; */
-    /*         } */
-    /*         if (keycode == OSMETA || // стоп слова с дальнейшей обработкой */
-    /*             keycode == BSEL || */
-    /*             keycode == _UP || */
-    /*             keycode == _DN) { */
-    /*             caps = 0; */
-    /*             unregister_code(KC_LSFT); */
-    /*         } */
-    /*         // если активно что-то выше 3 слоя */
-    /*         if (0b11111111111111111111111111111000 & layer_state) { */
-    /*             unregister_code(KC_LSFT); */
-    /*         } */
-    /*     } */
-    /* } */
+    if (record->event.pressed) {
+        if (caps == 1) { // стоп слова без дальнейшей обработки
+            if (keycode == CAPS ||
+                keycode == _ESC ||
+                keycode == OSM(MOD_LSFT) ||
+                keycode == _TAB
+                ) {
+                caps = 0;
+                unregister_code(KC_LSFT);
+                return 0;
+            }
+            if (keycode == OSMETA || // стоп слова с дальнейшей обработкой
+                keycode == BSEL ||
+                keycode == _UP ||
+                keycode == _DN) {
+                caps = 0;
+                unregister_code(KC_LSFT);
+            }
+            // если активно что-то выше 3 слоя
+            if (0b11111111111111111111111111111000 & layer_state) {
+                unregister_code(KC_LSFT);
+            }
+        }
+    }
 
     // :layer_triggers
     switch(keycode) {
@@ -708,13 +708,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     }
 
-    /* if (caps == 1) { */
-    /*     if (0b11111111111111111111111111111000 & layer_state) { */
-    /*         /\* unregister_code(KC_LSFT); *\/ */
-    /*     } else { */
-    /*         register_code(KC_LSFT); */
-    /*     } */
-    /* } */
+    if (caps == 1) {
+        if (0b11111111111111111111111111111000 & layer_state) {
+            /* unregister_code(KC_LSFT); */
+        } else {
+            register_code(KC_LSFT);
+        }
+    }
 
     return true;}
 
