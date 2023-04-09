@@ -23,6 +23,7 @@ enum custom_keycodes {
     XCDCLIP,
     CAPS,
     SQUO,
+    SDQUO,
     SPARENS,
     SBRACKS,
     SBRACES,
@@ -651,6 +652,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case SQUO:
             send_string(SS_LCTRL("x") "''" SS_TAP(X_LEFT) SS_LCTRL("v"));
             return 0;
+        case SDQUO:
+            send_string(SS_LCTRL("x") "\"\"" SS_TAP(X_LEFT) SS_LCTRL("v"));
+            return 0;
         case SPARENS:
             send_string(SS_LCTRL("x") "()" SS_TAP(X_LEFT) SS_LCTRL("v"));
             return 0;
@@ -822,7 +826,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% sticky:sel2
         (_______,          _______, _______, SBRACES, _DEL,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _______, PHONY,   SPARENS, SBRACKS, SQUO,             _BSP,    _______, _______, _______, _______, _______, _______, _______,
+         _______,          _______, SDQUO,   SPARENS, SBRACKS, SQUO,             _BSP,    _______, _______, _______, _______, _______, _______, _______,
          _______,          COPY,    PASTE,   _______, _______, COMMENT,          _______, _______, _______, _______, _______, UNINDENT,         _______,
          _______, _______, _______, _______, CUT,     DUPL,    PHONY,            _______, _______, _______, _______, _______, _______, _______, _______,
          OSL_EDI,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
