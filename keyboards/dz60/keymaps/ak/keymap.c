@@ -754,8 +754,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:edi
-        (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), EOSW_R,  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, QK_BOOT,
-         ALL,              CUT,     S(_HOME),DELBOW,  DELEOW,  DELEOSW,          _______, EOSW_L,  BOW_R,   BOW_L,   EOW_R,   _BOL,    _______, C(_F4),
+        (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), A(_RT),  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, QK_BOOT,
+         ALL,              CUT,     S(_HOME),DELBOW,  DELEOW,  DELEOSW,          _______, A(_LT),  C(_RT),  C(_LT),  C(A(_RT)),_BOL,  _______, C(_F4),
          G(S(_D)),         COPY,    PASTE,   SELBOL,  _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
          G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          HARDBOL, _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
@@ -764,7 +764,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    C(_R),   _______, _______, KILLTAB, KILLAPP, _______, _______, _______, _______, _______,
          WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    A(_GRV), RTAB,    LTAB,    FINDPRV, _______, _______, _______,
          _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),APPSW,   KILLTAB,SAVE,    WINTAB,  _______,          _______,
-         _______, _______, G(_7),   G(_6),   G(_5),   MTTASK,  _______,          _______, UPD,     KILLAPP, _______, CWD,     _______, _______, RGB_TOG,
+         _______, _______, G(_7),   G(_6),   G(_5),   C(_R),  _______,          _______, UPD,     KILLAPP, _______, CWD,     _______, _______, RGB_TOG,
          _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% :appswitch
@@ -821,8 +821,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:bra
         (_______,          S(_1),   CCS,     S(_LBR), BRACES,  S(_RBR), _______, _______, FINDAT,  QUOTES,  _COM,    OCLIP,   _______, _______, _______,
          _______,          S(_9),   S(_0),   ABRACKS, S(_COM), S(_DOT),          ORC,     OTREE,   OCWD,    ORECENT, OHOME,   ODIRED,  _______, _______,
-         _______,          _LBR,    _RBR,    E_CC,    CCS,     DEREF,            PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
-         _______, _______, _______, E_CV,    E_CX,    ORC,     HELPKEY,          LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
+         _______,          _LBR,    _RBR,    E_CC,    CCS,     HELPKEY,          PALETTE, MX,      OHOME,   _______, S(_4),   S(_3),            _______,
+         _______, _______, DEREF,   E_CV,    E_CX,    ORC,     _F1,              LCTL(_R),CTA(_S), LCTL(_W),S(_8)   ,S(_SLS), E_CZ,    _______, _______,
          _______,                   _______, _______,          COM_SPC, ORC,     COM_ENT,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:bra_ru
@@ -834,9 +834,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 
         LAYOUT_all //%% oneshot:ref
         (_______,          _______, _______, POPMARK, FSCR1,   _F11,    _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______,
-         FSEL,             _______, EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   ZOOM,    PREVW,   DELCUR,  _______, _______,
+         LMONITOR,RMONITOR,EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   ZOOM,    PREVW,   DELCUR,  _______, _______,
          DELCELL,          DELCELL, EVAL,    CELLUP,  CELLDN,  RECENTER,         FINDAT,  FSEARCH, PALETTE, REPLACE, _______, _______,          _______,
-         NEWABOVE,_______, NEWBELOW,_F5,     _F2,     _F12,    S(_F12),          _______, _______, _______, _______, _______, _______, _______, _______,
+         NEWABOVE,_______, _F6,     _F5,     _F2,     _F12,    S(_F12),          _______, _______, _F3,     _F4,     _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:help

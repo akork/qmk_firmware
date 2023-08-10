@@ -18,6 +18,10 @@
 #define LSCR G(_LT)
 #define RSCR G(_RT)
 
+// screens
+#define LMONITOR G(S(_LT))
+#define RMONITOR G(S(_LT))
+
 // tabs
 #define LTAB C(S(_TAB))
 #define RTAB C(_TAB)
