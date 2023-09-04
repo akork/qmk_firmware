@@ -268,7 +268,8 @@ bool oneshot_process(keyrecord_t *record, uint8_t layer_n, bool check_ru) {
     return 0;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+bool process_record_user(uint16_t
+			 keycode, keyrecord_t *record) {
     uint8_t layer = layer_switch_get_layer(record->event.key); // from which layer keycode flew in
     // turn off ru_lr upon specific keys
     if (record->event.pressed) {
@@ -343,6 +344,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     }
 
+    // ctrl-shift-t (os + shift fake layer)
+    if (record->event.pressed &&
+	((1U << MACOS_LR) & layer_state) &&
+	(keyboard_report->mods & (MOD_BIT(KC_LSFT))) &&
+	keycode == C(_W)) {
+      send_string(SS_LCTL("t"));
+      /* register_code(OSM(MOD_LSFT)); */
+      return 0;
+    }
+    
+    
     // :layer_triggers
     switch(keycode) {
     case PHONY:
@@ -733,11 +745,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         /* ,                          ,        ,                 ,       ,         ,        ,                 ,                 ,        ,        ) */
 
         LAYOUT_all //%% plain:en
-        (S(_BSL),          S(_BSL), QUOTES,  S(_MIN), _TAB,    S(_5),   _______, S(_2),   _B,      _Y,      OSL_BRA, FINDNXT, FINDPRV, _NO,     S(_F10),
+        (S(_BSL),          S(_BSL), QUOTES,  S(_MIN), _TAB,    S(_5),   _______, S(_2),   _B,      _Y,      OSL_BRA, FINDNXT, KC_PSCR, KC_PSCR, S(_F10),
          BRACKS,           PARENS,  OSL_SYM, _O,      _EQL,    _MIN,             _BSP,    _G,      _C,      _R,      _F,      _K,      BRACES, _F3,
          OSL_NUM,  XDOT,   _A,      _E,      _I,      _U,               _L,      _H,      _T,      _N,      _S,      _RT,                    G(A(_ENT)),
          BSEL,     _A,     _J,      _Q,      _SLS,    _P,      _ESC,             _D,      _M,      _W,      _V,      _X,      _Z,      C(A(_Y)),KC_VOLU,
-         OSL_EDI,                   _LGUI,   RALT,             _SPC,OSM(MOD_LSFT),OSMETA,           RCMD,   METASWITCH,OSM(MOD_LCTL),OSL_REF, OSL_HELP),
+         OSL_EDI,                   _LGUI,   RALT,             _SPC,OSM(MOD_LSFT),OSMETA,           RCMD,   RALT,OSM(MOD_LCTL),OSL_REF, OSL_HELP),
 
         LAYOUT_all //%% plain:ru
         (_______,          _______, _SCL,    _______, _______, _______, _______, _______, _COM,    _E,      _______, _______, _______, _______, _______,
@@ -756,15 +768,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% oneshot:edi
         (_______,          _______, _______, UNDO,    _______, _BOF,    _EOF,    G(_LBR), A(_RT),  _DEL,    HARDBOL, SWAPUP,  SWAPDN,  HELPKEY, QK_BOOT,
          ALL,              CUT,     S(_HOME),DELBOW,  DELEOW,  DELEOSW,          _______, A(_LT),  C(_RT),  C(_LT),  C(A(_RT)),_BOL,  _______, C(_F4),
-         G(S(_D)),         COPY,    PASTE,   SELBOL,  _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
+         G(S(_D)),         COPY,    PASTE,   HARDBOL, _EOL,    COMMENT,          _LT,     _DN,     _UP,     _RT,     SELDN,   SELUP,            _______,
          G(_X),   _______, CC_PLS,  DELETE,  CUT,     DUPL,    _______,          HARDBOL, _PGDN,   _PGUP,   _DEL,    G(_DN),  _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% mod:os
         (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    C(_R),   _______, _______, KILLTAB, KILLAPP, _______, _______, _______, _______, _______,
          WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    A(_GRV), RTAB,    LTAB,    FINDPRV, _______, _______, _______,
-         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),APPSW,   KILLTAB,SAVE,    WINTAB,  _______,          _______,
-         _______, _______, G(_7),   G(_6),   G(_5),   C(_R),  _______,          _______, UPD,     KILLAPP, _______, CWD,     _______, _______, RGB_TOG,
+         _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),APPSW,   KILLTAB, SAVE,    WINTAB,  _______,          _______,
+         _______, _______, G(_7),   G(_6),   G(_5),   C(_R),  _______,          _______,  C(_R),   KILLAPP,  C(_R),   CWD,     PATH,    _______, RGB_TOG,
          _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% :appswitch
