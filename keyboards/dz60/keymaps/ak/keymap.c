@@ -353,8 +353,8 @@ bool process_record_user(uint16_t
       /* register_code(OSM(MOD_LSFT)); */
       return 0;
     }
-    
-    
+
+
     // :layer_triggers
     switch(keycode) {
     case PHONY:
@@ -554,7 +554,7 @@ bool process_record_user(uint16_t
             /* return 0 { */
             /* }; */
         case APPKILL: // for appswitcher (doesn't lift alt)
-            send_string(SS_DOWN(X_LALT) SS_TAP(X_F4) SS_UP(X_LALT));
+            send_string(SS_DOWN(X_LALT) SS_LCTL("w"));
             /* register_code(KC_LALT); */
             /* register_code(KC_LCTL); */
             /* register_code(_W); */
@@ -782,7 +782,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
         LAYOUT_all //%% :appswitch
         (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______,          _______, _______, SBROWSER,_______, _______,          _______, KILLAPP, _HOME,   APPDN,   APPUP,   _______, _______, _______,
-         _______,          _______, STERM,   SEMACS,  _______, _______,          _______, CMDTAB,  SCMDTAB, APPKILL, _______, APKILL,           _______,
+         _______,          _______, STERM,   SEMACS,  _______, _______,          _______, CMDTAB,  SCMDTAB, APPKILL, KC_HOME, _______,          _______,
          _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
