@@ -22,6 +22,9 @@
 #define LMONITOR G(S(_LT))
 #define RMONITOR G(S(_LT))
 
+#define SWKILL C(_W)
+#define SWHOME KC_HOME
+
 // tabs
 #define LTAB C(S(_TAB))
 #define RTAB C(_TAB)
@@ -51,8 +54,8 @@
 #define OFILE C(_O)
 #define ORC C(_COM)
 
-#define PATH A(S(_C))
-#define CWD C(A(S(_C)))
+#define FILEPTH A(S(_C))
+#define FILEDIR C(A(S(_C)))
 
 #define UPD _F5
 #define SAVE C(_S)
@@ -71,8 +74,8 @@
 #define RECENTER C(_F10)
 #define POPMARK _F17
 #define UNPOPMARK C(_F17) //:TD
-#define FSEARCH C(_F)
-#define BSEARCH C(S(_F))
+#define FWDSRCH C(_F)
+#define BWDSRCH C(S(_F))
 #define ALTSRCH _F3
 #define FINDNXT C(_G)
 #define FINDPRV C(S(_G))

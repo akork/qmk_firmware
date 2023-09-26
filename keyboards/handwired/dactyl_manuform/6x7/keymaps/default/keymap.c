@@ -9,12 +9,16 @@
 
 enum custom_keycodes {
     TEST_ = SAFE_RANGE,
+    // :sysmeta
     SYSMETA_,
-    APPSW_,
-    ALTTAB,
-    SALTTAB,
+    APPSW__,
+    SWNEXT_,
+    SWPREV_,
+    // :oneshot triggers
     REF__,
     BRA__,
+    // :actions
+    // :symbols
     PARENS,
     PARENSRU,
     BRACES,
@@ -47,6 +51,7 @@ static uint16_t oneshot_timer;
 
 static uint8_t modtap_fired = 1;
 static uint8_t oneshot_down = 0, oneshot_fired = 1;
+static uint8_t sysmeta_up_signal = 0;
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -75,37 +80,59 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	_A      , _DOT    , _A      , _E      , _I      , _U      , _SPC    ,    _BSP    , _L      , _H      , _T      , _N      , _S      , _RT     ,
 	_SPC    , _J      , _Q      , _SLS    , _P      , _ESC    ,                        _D      , _M      , _W      , _V      , _X      , _Z      ,
         KC_ESC  , KC_F1   , KC_F2   , KC_F3   , KC_F4   ,                                            KC_A    , KC_B    , KC_C    , KC_D    , REF__   ,
-	                                        KC_A    , KC_B    , KC_C    ,    _ENT    , SYSMETA_, REF__   ,
+	                                        KC_A    , KC_B    , KC_C    ,    _DEL    , SYSMETA_, REF__   ,
                                                 KC_D    , KC_E    , KC_F    ,    _ESC    , _BSP    , BRA__
 			 ),
 
-  [__OS] = LAYOUT_6x7(
+        /* (MOD_SWITCH,       _______, LSCR,    RSCR,    FSCR,    C(_R),   _______, _______, KILLTAB, KILLAPP, _______, _______, _______, _______, _______, */
+        /*  WIN,              REDO,    BROWSER2,BROWSER, MTTASK2, KILLTAB,          PTAB,    A(_GRV), RTAB,    LTAB,    FINDPRV, _______, _______, _______, */
+        /*  _______,          CUT,     TERM,    EMACS,   UNDO,    MTTASK3,          HYPR(_K),APPSW,   KILLTAB, SAVE,    WINTAB,  _______,          _______, */
+        /*  _______, _______, G(_7),   G(_6),   G(_5),   C(_R),  _______,          _______,  C(_R),   KILLAPP,  C(_R),   CWD,     PATH,    _______, RGB_TOG, */
+        /*  _______,                   _______, _______,          OFFMETA, _______, _______,          _______, _______,          _______, _______, _______), */
+
+        /* LAYOUT_all //%% :appswitch */
+        /* (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, */
+        /*  _______,          _______, _______, SBROWSER,_______, _______,          _______, KILLAPP, _HOME,   APPDN,   APPUP,   _______, _______, _______, */
+        /*  _______,          _______, STERM,   SEMACS,  _______, _______,          _______, CMDTAB,  SCMDTAB, APPKILL, KC_HOME, _______,          _______, */
+        /*  _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______, */
+        /*  _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______), */
+
+
+  
+  [__OS] = LAYOUT_6x7( // l_os
         _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
-        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
-        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , APPSW_  , _______ , _______ , _______ , _______ , 
-        _______ , _______ , _______ , _______ , _______ , _______ ,                        _______ , _______ , _______ , _______ , _______ , _______ , 
-        _______ , _______ , _______ , _______ , _______ ,                                            _______ , _______ , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , RTAB    , LTAB    , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , APPSW__ , KILLTAB , C(_S)   , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ ,                        _______ , C(_R)   , _______ , KILLAPP , FILEDIR , _______ , 
+        _______ , _______ , _______ , _______ , _______ ,                                            _______ , _______ , _______ , FILEPTH , _______ , 
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______ ,
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______
 		     ),
-  [__APPSWITCH] = LAYOUT_6x7(
+  [__APPSWITCH] = LAYOUT_6x7( // l_appswitch
         _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
         _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
-        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , ALTTAB  , SALTTAB , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , SWNEXT_ , SWPREV_ , _______ , SWHOME  , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ ,                        _______ , _______ , _______ , SWKILL  , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ ,                                            _______ , _______ , _______ , _______ , _______ , 
+	                                        _______ , _______ , _______ ,    _______ , _______ , _______ ,
+	                                        _______ , _______ , _______ ,    _______ , _______ , _______
+			     ),
+        /*   LAYOUT_all //%% oneshot:ref */
+        /* (_______,          _______, _______, POPMARK, FSCR1,   _F11,    _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______, */
+        /*  LMONITOR,RMONITOR,EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   ZOOM,    PREVW,   DELCUR,  _______, _______, */
+        /*  DELCELL,          DELCELL, EVAL,    CELLUP,  CELLDN,  RECENTER,         FINDAT,  FSEARCH, PALETTE, REPLACE, _______, _______,          _______, */
+        /*  NEWABOVE,_______, _F6,     _F5,     _F2,     _F12,    S(_F12),          _______, _______, _F3,     _F4,     _______, _______, _______, _______, */
+        /*  _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______), */
+
+  [__REF] = LAYOUT_6x7( // l_ref
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , FWDSRCH , PALETTE , REPLACE , _______ , _______ , 
         _______ , _______ , _______ , _______ , _______ , _______ ,                        _______ , _______ , _______ , _______ , _______ , _______ , 
         _______ , _______ , _______ , _______ , _______ ,                                            _______ , _______ , _______ , _______ , _______ , 
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______ ,
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______
 			     ),
-    [__REF] = LAYOUT_6x7(
-        _______ , KC_GRV  , KC_1    , KC_2    , KC_3    , KC_4    , KC_5    ,    KC_A    , KC_6    , KC_7    , KC_8    , KC_9    , KC_0    , KC_A    , 
-	_A      , _A      , _A      , _O      , _EQL    , _MIN    , _SPC    ,    _SPC    , _BSP    , _G      , _C      , _R      , _F      , _K      ,
-	_A      , _DOT    , _A      , _E      , _I      , _U      , _SPC    ,    _BSP    , _L      , _A      , _A      , _N      , _S      , _RT     ,
-        _______ , KC_LCTL , KC_Z    , KC_X    , KC_C    , KC_V    ,                        KC_N    , KC_M    , KC_COMM , KC_DOT  , KC_SLSH , KC_D    ,
-        KC_ESC  , KC_F1   , KC_F2   , KC_F3   , KC_F4   ,                                            KC_A    , KC_B    , KC_C    , KC_D    , KC_E    ,
-	                                        KC_A    , KC_B    , KC_C    ,    KC_A    , SYSMETA_  , KC_E    ,
-	                                        KC_D    , KC_E    , KC_F    ,    KC_R    , KC_T    , KC_Y
-			 ),
   [__BRA] = LAYOUT_6x7(
         _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
         _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , OTREE   , ODIRED  , OFILE   , _______ , _______ , 
@@ -161,11 +188,18 @@ void matrix_scan_user(void) {
 
 bool process_record_user(uint16_t
 			 keycode, keyrecord_t *record) {
-    /* uint8_t layer = layer_switch_get_layer(record->event.key); // from which layer keycode flew in */
+    uint8_t layer = layer_switch_get_layer(record->event.key); // from which layer keycode flew in
 
 
 
-  
+    if (layer == __OS) {
+        if (keycode == LTAB ||
+            keycode == RTAB) {
+            sysmeta_up_signal = 1;
+        } else {
+            sysmeta_up_signal = 0;
+        }
+    }
 
   switch (keycode) {
   case REF__: return oneshot_process(record, __REF, 0);
@@ -175,7 +209,7 @@ bool process_record_user(uint16_t
     if (1U << __OS & layer_state) {
         if (record->event.pressed) {
             switch(keycode) {
-            case APPSW_:
+            case APPSW__:
                 if (record->event.pressed) {
                     if (get_mods() & MOD_BIT(KC_LSFT))
                         del_mods(MOD_BIT(KC_LSFT));
@@ -184,7 +218,7 @@ bool process_record_user(uint16_t
                 }
 
                 return false;
-            case ALTTAB:
+            case SWNEXT_:
                 if (record->event.pressed) {
                     if (get_mods() & MOD_BIT(KC_LSFT))
                         del_mods(MOD_BIT(KC_LSFT));
@@ -193,7 +227,7 @@ bool process_record_user(uint16_t
                 }
 
                 return false;
-            case SALTTAB:
+            case SWPREV_:
                 if (record->event.pressed) {
                     send_string(SS_DOWN(X_LSFT) SS_TAP(X_TAB) SS_UP(X_LSFT));
                 }
@@ -230,10 +264,10 @@ bool process_record_user(uint16_t
                     unregister_code(KC_RALT);
                     unregister_code(KC_LSFT);
                     unregister_code(KC_RSFT);
-                    /* if (meta_up_signal) { */
-                    /*     register_code(MAGIC); */
-                    /*     unregister_code(MAGIC); */
-                    /* } */
+                    if (sysmeta_up_signal) {
+                        register_code(_F19);
+                        unregister_code(_F19);
+                    }
                 }
             }
             layer_and(~(3U << __OS));
@@ -245,6 +279,9 @@ bool process_record_user(uint16_t
 
     if (record->event.pressed) {
       switch (keycode) {
+	// :actions
+	
+	// :symbols
       case PARENS:
 	SEND_STRING("()" SS_TAP(X_LEFT));
 	return false;
