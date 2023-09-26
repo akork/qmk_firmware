@@ -15,6 +15,7 @@ enum custom_keycodes {
     SWNEXT_,
     SWPREV_,
     // :oneshot triggers
+    NUM__,
     REF__,
     BRA__,
     // :actions
@@ -38,11 +39,12 @@ enum custom_layer {
     __QWERTY,
     __OS,
     __APPSWITCH,
+    __NUM,
     __REF,
     __BRA
 };
 
-static const layer_state_t osl_mask = 0b11000u;
+static const layer_state_t osl_mask = 0b111000u;
 
 static const uint16_t timer_threshold = 250;
 static const uint16_t oneshot_threshold = 1000;
@@ -80,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	_A      , _DOT    , _A      , _E      , _I      , _U      , _SPC    ,    _BSP    , _L      , _H      , _T      , _N      , _S      , _RT     ,
 	_SPC    , _J      , _Q      , _SLS    , _P      , _ESC    ,                        _D      , _M      , _W      , _V      , _X      , _Z      ,
         KC_ESC  , KC_F1   , KC_F2   , KC_F3   , KC_F4   ,                                            KC_A    , KC_B    , KC_C    , KC_D    , REF__   ,
-	                                        KC_A    , KC_B    , KC_C    ,    _DEL    , SYSMETA_, REF__   ,
+	                                        KC_A    , KC_B    , KC_C    ,    _DEL    , SYSMETA_, NUM__   ,
                                                 KC_D    , KC_E    , KC_F    ,    _ESC    , _BSP    , BRA__
 			 ),
 
@@ -117,6 +119,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______ ,
 	                                        _______ , _______ , _______ ,    _______ , _______ , _______
 			     ),
+  [__NUM] = LAYOUT_6x7( // l_ref
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _______ , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _______ , _______ , _0      , _9      , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ , _______ , _______ ,    _______ , _6      , _1      , _2      , _3      , _4      , _5      , 
+        _______ , _______ , _______ , _______ , _______ , _______ ,                        _7      , _8      , _______ , _______ , _______ , _______ , 
+        _______ , _______ , _______ , _______ , _______ ,                                            _______ , _______ , _______ , _______ , _______ , 
+	                                        _______ , _______ , _______ ,    _______ , _______ , _______ ,
+	                                        _______ , _______ , _______ ,    _______ , _______ , _______
+			     ),
+
+        /* LAYOUT_all //%% oneshot:num */
+        /* (_______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, */
+        /*  _______,          _______, _______, _______, COUT,    CIN,              NAMESPACE,COUT,   _0,      _9,      CIN, _______, _______, _______, */
+        /*  _CAP,             _______, _______, _______, _ESC,    _______,          _6,      _1,      _2,      _3,      _4,      _5,               _______, */
+        /*  _______, _______, _______, _______, REDEBUG, CLDEBUG, _______,          _7,      _8,      _______, CC_PLS,  CC_MIN,  _______, _______, _______, */
+        /*  _______,                   _______, _______,          SCLSPC, _______,  _______,          _______, _______,          _______, _______, _______), */
+
+  
         /*   LAYOUT_all //%% oneshot:ref */
         /* (_______,          _______, _______, POPMARK, FSCR1,   _F11,    _______, _______, _______, _______, ALTSRCH, _______, _______, _______, _______, */
         /*  LMONITOR,RMONITOR,EVALF,   EVALF,   _______, _______,          _______, SPLITRT, NEXTW,   ZOOM,    PREVW,   DELCUR,  _______, _______, */
@@ -202,6 +222,7 @@ bool process_record_user(uint16_t
     }
 
   switch (keycode) {
+  case NUM__: return oneshot_process(record, __NUM, 0);
   case REF__: return oneshot_process(record, __REF, 0);
   case BRA__: return oneshot_process(record, __BRA, 0);
   }
