@@ -135,7 +135,6 @@ enum custom_keycodes {
     H_D,
     SPRNT,
     FPRNT,
-    SWITCHPY,
     DDD,
     ALTF4,
     APPKILL,
@@ -151,7 +150,7 @@ enum custom_keycodes {
 enum {
     EN_LR,          // 0 0
     RU_LR,          // 1 0
-    BRACES_LR,      // 2 0
+    /* BRACES_LR,      // 2 0 */
     EDI_LR,         // 3 1
     MACOS_LR,       // 4 0
     APPSWITCH_LR,   // 5 0
@@ -167,7 +166,7 @@ enum {
     HELP_LR,         //15 1
 };
 
-static const layer_state_t osl_mask = 0b1111110001001000u;
+static const layer_state_t osl_mask = 0b111111000100100u;
 static const uint16_t timer_threshold = 250;
 static const uint16_t oneshot_threshold = 1000;
 
@@ -181,7 +180,7 @@ static uint8_t modtap_fired = 1;
 static uint8_t caps = 0,
     sel_off = 0,
     sel2_off = 0,
-    braces_lr_off = 0,
+    /* braces_lr_off = 0, */
     mod = 0,
     meta_up_signal = 0,
     py = 0;
@@ -242,10 +241,10 @@ void matrix_scan_user(void) {
 	unregister_code(KC_LSFT);
         sel2_off = 0;
     }
-    if (braces_lr_off) {
-        layer_and(~(1U << BRACES_LR));
-        braces_lr_off = 0;
-    }
+    /* if (braces_lr_off) { */
+    /*     layer_and(~(1U << BRACES_LR)); */
+    /*     braces_lr_off = 0; */
+    /* } */
 }
 
 /* void check_keys(uint16_t ...) { */
@@ -304,7 +303,7 @@ bool process_record_user(uint16_t
         }
     }
 
-    if (record->event.pressed) if ((1U << BRACES_LR) & layer_state) braces_lr_off = 1;
+    /* if (record->event.pressed) if ((1U << BRACES_LR) & layer_state) braces_lr_off = 1; */
     // oneshot processing (setting oneshot_fired flag)
     if (record->event.pressed) if (osl_mask & layer_state) oneshot_fired = 1;
 
@@ -369,30 +368,30 @@ bool process_record_user(uint16_t
             return 0;
         }
         return 0;
-    case XDOT:
-        if (record->event.pressed) {
-            send_string(".");
-            layer_or((1U << BRACES_LR));
-            braces_lr_off = 0;
-        }
-        return 0;
-    case EENTER:
-        if (record->event.pressed) {
-            send_string(SS_TAP(X_ENTER));
-            layer_or((1U << BRACES_LR));
-            braces_lr_off = 0;
-        }
-        return 0;
-    case EEENTER:
-        if (record->event.pressed) {
-            send_string(SS_TAP(X_UP) XEOL SS_TAP(X_ENTER));
-        }
-        return 0;
-    case DDDEREF:
-        if (record->event.pressed) {
-            send_string(SS_TAP(X_BSPC) "->");
-        }
-        return 0;
+    /* case XDOT: */
+    /*     if (record->event.pressed) { */
+    /*         send_string("."); */
+    /*         layer_or((1U << BRACES_LR)); */
+    /*         braces_lr_off = 0; */
+    /*     } */
+    /*     return 0; */
+    /* case EENTER: */
+    /*     if (record->event.pressed) { */
+    /*         send_string(SS_TAP(X_ENTER)); */
+    /*         layer_or((1U << BRACES_LR)); */
+    /*         braces_lr_off = 0; */
+    /*     } */
+    /*     return 0; */
+    /* case EEENTER: */
+    /*     if (record->event.pressed) { */
+    /*         send_string(SS_TAP(X_UP) XEOL SS_TAP(X_ENTER)); */
+    /*     } */
+    /*     return 0; */
+    /* case DDDEREF: */
+        /* if (record->event.pressed) { */
+            /* send_string(SS_TAP(X_BSPC) "->"); */
+        /* } */
+        /* return 0; */
     case CAPS:
         if (record->event.pressed) {
             caps = 1; // layer emulates with flag
@@ -588,9 +587,6 @@ bool process_record_user(uint16_t
             /* case CELLUP: */
             /* send_string(SS_TAP(X_ESC) SS_TAP(X_UP) "e"); */
             /* return 0; */
-        case SWITCHPY:
-            py = (py + 1) % 2;
-            return 0;
         case CCS:
             send_string(XEOL ";");
             return 0;
@@ -673,7 +669,7 @@ bool process_record_user(uint16_t
             return 0;
         case BRACES:
             SEND_STRING("{}" SS_TAP(X_LEFT));
-            layer_on(BRACES_LR);
+            /* layer_on(BRACES_LR); */
             return false;
         case PARENS:
             SEND_STRING("()" SS_TAP(X_LEFT));
@@ -756,13 +752,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
          _W,               _______, _______, _J,      _Q,      _______,          _______, _U,      _Z,      _H,      _A,      _P,      _RBR,    _O,
          _______,          _SLS,    _F,      _T,      _B,      _M,               _K,      _R,      _N,      _Y,      _C,      _Q,               _______,
          _DOT,    _______, _QUO,    _I,      _S,      _G,      _______,          _L,      _V,      _D,      _X,      _LBR,    _______, _______, _______,
-         _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
-
-        LAYOUT_all //%% mod:braces2
-        (_______,          _______, _______, _______, EEENTER, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
-         _______,          _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, DDDEREF,          _______,
-         _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______,
          _______,                   _______, _______,          _______, _______, _______,          _______, _______,          _______, _______, _______),
 
         LAYOUT_all //%% oneshot:edi
