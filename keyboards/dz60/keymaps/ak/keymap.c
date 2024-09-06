@@ -368,13 +368,13 @@ bool process_record_user(uint16_t
             return 0;
         }
         return 0;
-    /* case XDOT: */
-    /*     if (record->event.pressed) { */
-    /*         send_string("."); */
-    /*         layer_or((1U << BRACES_LR)); */
-    /*         braces_lr_off = 0; */
-    /*     } */
-    /*     return 0; */
+    case XDOT:
+        if (record->event.pressed) {
+            send_string(".");
+            /* layer_or((1U << BRACES_LR)); */
+            /* braces_lr_off = 0; */
+        }
+        return 0;
     /* case EENTER: */
     /*     if (record->event.pressed) { */
     /*         send_string(SS_TAP(X_ENTER)); */
